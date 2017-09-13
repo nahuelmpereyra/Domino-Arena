@@ -6,7 +6,7 @@ import ar.edu.unq.domino.sistema.Sistema
 class DominoApplication extends Application {
 	
 	override protected createMainWindow() {
-		new CrearDominoPizzaWindow(this, new Sistema)
+		new SistemaWindow(this, new Sistema)
 	}
 	
 	def static main(String[] args) {

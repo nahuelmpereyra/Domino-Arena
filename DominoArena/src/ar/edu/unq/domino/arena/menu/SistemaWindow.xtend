@@ -81,7 +81,9 @@ class SistemaWindow extends SimpleWindow<Sistema> {
 		new Button(buttonPanel3) => [
 			caption = 'Menú'
 			width = 75
+			onClick [this.menuWindow]
 		]
+		
 
 		new Button(buttonPanel3) => [
 			caption = 'Pedidos cerrados'
@@ -94,6 +96,10 @@ class SistemaWindow extends SimpleWindow<Sistema> {
 			width = 75
 			onClick [close]
 		]
+	}
+	
+	def menuWindow() {
+		this.openDialog(new MenuWindow(this, modelObject))
 	}
 	
 		def pedidosCerradosWindow() {

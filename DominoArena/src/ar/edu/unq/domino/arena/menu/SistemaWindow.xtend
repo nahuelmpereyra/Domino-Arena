@@ -26,7 +26,7 @@ class SistemaWindow extends SimpleWindow<Sistema> {
 
 	override protected createFormPanel(Panel mainPanel) {
 		mainPanel.layout = new HorizontalLayout
-		
+
 		// Panel principal
 		val panel = new Panel(mainPanel) => [
 			layout = new VerticalLayout
@@ -83,7 +83,6 @@ class SistemaWindow extends SimpleWindow<Sistema> {
 			width = 75
 			onClick [this.menuWindow]
 		]
-		
 
 		new Button(buttonPanel3) => [
 			caption = 'Pedidos cerrados'
@@ -97,20 +96,18 @@ class SistemaWindow extends SimpleWindow<Sistema> {
 			onClick [close]
 		]
 	}
-	
+
 	def menuWindow() {
 		this.openDialog(new MenuWindow(this, modelObject))
 	}
-	
-		def pedidosCerradosWindow() {
+
+	def pedidosCerradosWindow() {
 		this.openDialog(new PedidosCerradosWindow(this, modelObject))
 	}
-	
+
 	def openDialog(Dialog<?> dialog) {
 		dialog.open
 	}
-	
-
 
 	def crearTablaPedidosAbiertos(Table<Pedido> table) {
 		new Column(table) => [

@@ -30,7 +30,7 @@ class MenuWindow extends TransactionalDialog<Sistema> {
 
 	override protected createFormPanel(Panel mainPanel) {
 		new Panel(mainPanel) => [
-		mainPanel.layout = new VerticalLayout
+		mainPanel.layout = new HorizontalLayout
 		crearPanelDePromociones(it)
 		crearPanelDeIngredientesExtras(it)
 		title = "Dominos Pizza-Menu"

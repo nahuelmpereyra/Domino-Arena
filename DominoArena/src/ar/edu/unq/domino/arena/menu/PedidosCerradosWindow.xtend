@@ -52,7 +52,7 @@ class PedidosCerradosWindow extends TransactionalDialog<Sistema>{
 		new Button(buttonPanel3) => [
 			caption = 'Volver'
 			width = 75
-			//onClick [this.sistemaWindow]
+			onClick ([close])
 		]
 	}
 	

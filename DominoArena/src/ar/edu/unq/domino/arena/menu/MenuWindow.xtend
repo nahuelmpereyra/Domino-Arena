@@ -132,6 +132,7 @@ class MenuWindow extends TransactionalDialog<Sistema> {
 		new Column(table) => [
 			title = "Nombre"
 			fixedSize = 300
+			bindContentsToProperty("nombre")
 		]
 
 		new Column(table) => [

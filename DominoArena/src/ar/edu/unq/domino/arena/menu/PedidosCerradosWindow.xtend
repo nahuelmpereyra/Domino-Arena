@@ -63,7 +63,8 @@ class PedidosCerradosWindow extends TransactionalDialog<Sistema>{
 		new Column(table) => [
 			title = "Pedido"
 			fixedSize = 100
-			bindContentsToProperty("nombre")
+			bindContentsToProperty("estado")
+			// CORREGIR!!!!!!
 		]
 
 		new Column(table) => [

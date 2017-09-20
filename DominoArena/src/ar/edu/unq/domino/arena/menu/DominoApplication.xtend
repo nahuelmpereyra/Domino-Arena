@@ -7,7 +7,7 @@ import ar.edu.unq.domino.Pizzas.Menu
 class DominoApplication extends Application {
 	
 	override protected createMainWindow() {
-		new SistemaWindow(this, new Sistema(new Menu))
+		new SistemaWindow(this, new Sistema())
 	}
 	
 	def static main(String[] args) {

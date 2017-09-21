@@ -13,12 +13,11 @@ import org.uqbar.arena.layout.HorizontalLayout
 import org.uqbar.arena.widgets.CheckBox
 import org.uqbar.arena.widgets.RadioSelector
 import org.uqbar.arena.widgets.Button
-import ar.edu.unq.domino.Pizzas.Plato
+import ar.edu.unq.domino.sistema.Sistema
 
+class AgregarEditarPlatoWindow extends TransactionalDialog<Sistema> {
 
-class AgregarEditarPlatoWindow extends TransactionalDialog<Plato> {
-
-	new(WindowOwner owner, Plato model) {
+	new(WindowOwner owner, Sistema model) {
 		super(owner, model)
 	}
 

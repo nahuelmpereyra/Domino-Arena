@@ -9,8 +9,10 @@ import org.uqbar.arena.layout.HorizontalLayout
 import org.uqbar.arena.widgets.Label
 import org.uqbar.arena.widgets.TextBox
 import org.uqbar.arena.widgets.Button
+import org.uqbar.arena.widgets.CheckBox
+import org.uqbar.arena.widgets.RadioSelector
 
-class CrearIngredienteWindow extends TransactionalDialog<Sistema>{
+class CrearEditarPromoPizzaWindow extends TransactionalDialog<Sistema>{
 	
 	new(WindowOwner owner, Sistema sistema) {
 		super(owner, sistema)
@@ -18,7 +20,7 @@ class CrearIngredienteWindow extends TransactionalDialog<Sistema>{
 	
 	override protected createFormPanel(Panel mainPanel) {
 		
-		title = "Ingrediente"
+		title = "Promo"
 		
 		mainPanel.layout = new VerticalLayout
 		
@@ -40,20 +42,69 @@ class CrearIngredienteWindow extends TransactionalDialog<Sistema>{
 			width = 150
 		]
 		
-		val panel3 = new Panel(mainPanel) => [
+		val panel3 = new Panel(mainPanel).layout = new HorizontalLayout
+
+		new CheckBox(panel3) => [
+
+		]
+
+		new Label(panel3).text = "Jamon"
+		
+		new RadioSelector(panel3) => [
+			 								
+		]
+
+		val panel4 = new Panel(mainPanel).layout = new HorizontalLayout
+
+		new CheckBox(panel4) => [
+
+		]
+
+		new Label(panel4).text = "Anana"
+
+		new RadioSelector(panel4) => [
+		
+		]
+
+		val panel5 = new Panel(mainPanel).layout = new HorizontalLayout
+
+		new CheckBox(panel5) => [
+
+		]
+
+		new Label(panel5).text = "Morrones"
+
+		new RadioSelector(panel5) => [
+
+		]
+
+		val panel6 = new Panel(mainPanel).layout = new HorizontalLayout
+
+		new CheckBox(panel6) => [
+
+		]
+
+		new Label(panel6).text = "Queso"
+
+		new RadioSelector(panel6) => [
+
+		]
+		
+		val panel7 = new Panel(mainPanel) => [
 		layout = new HorizontalLayout
 		]
 		
-		new Button(panel3) => [
+		new Button(panel7) => [
 			caption = 'Aceptar'
 			width = 75
 		]
 
-		new Button(panel3) => [
+		new Button(panel7) => [
 			caption = 'Cancelar'
 			width = 75
 			onClick([close])
 		]
+		
 	}
 	
 }

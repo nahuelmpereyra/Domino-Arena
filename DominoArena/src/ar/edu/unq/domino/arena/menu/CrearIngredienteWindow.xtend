@@ -18,7 +18,7 @@ class CrearIngredienteWindow extends TransactionalDialog<Sistema>{
 	
 	override protected createFormPanel(Panel mainPanel) {
 		
-		this.title = "Ingrediente"
+		title = "Ingrediente"
 		
 		mainPanel.layout = new VerticalLayout
 		

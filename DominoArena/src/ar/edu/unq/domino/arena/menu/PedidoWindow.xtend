@@ -1,6 +1,5 @@
 package ar.edu.unq.domino.arena.menu
 
-import org.uqbar.arena.windows.SimpleWindow
 import org.uqbar.arena.widgets.Panel
 import ar.edu.unq.domino.sistema.Sistema
 import org.uqbar.arena.windows.WindowOwner
@@ -12,8 +11,9 @@ import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.Button
 import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.widgets.Label
+import org.uqbar.arena.aop.windows.TransactionalDialog
 
-abstract class PedidoWindow extends SimpleWindow<Sistema> {
+abstract class PedidoWindow extends TransactionalDialog<Sistema> {
 	
 	public Panel panel1
 	public Panel panel2
@@ -66,9 +66,14 @@ abstract class PedidoWindow extends SimpleWindow<Sistema> {
 	def pedidosCerradosWindow() {
 		this.openDialog(new PedidosCerradosWindow(this, modelObject))
 	}
+	
 
 	def openDialog(Dialog<?> dialog) {
 		dialog.open
+	}
+	
+	def pedidosAbiertosWindow() {
+		this.openDialog(new PedidosAbiertosWindow(this, modelObject))
 	}
 
 	def crearTablaPedidosAbiertos(Table<Pedido> table) {
@@ -86,13 +91,16 @@ abstract class PedidoWindow extends SimpleWindow<Sistema> {
 		columna2.fixedSize = 100
 		columna2.bindContentsToProperty("estado")
 		
+		
 		columna3.title = ""
 		columna3.fixedSize = 100
 		columna3.bindContentsToProperty("monto")
 		
+		
 		columna4.title = ""
 		columna4.fixedSize = 100
 		columna4.bindContentsToProperty("fecha")
+		
 
 	}
 

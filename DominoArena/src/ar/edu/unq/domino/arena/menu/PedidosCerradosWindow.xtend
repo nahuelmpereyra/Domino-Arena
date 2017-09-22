@@ -25,6 +25,7 @@ class PedidosCerradosWindow extends PedidoWindow {
 
 		boton1.caption = 'Ver'
 		boton2.caption = "Volver"
+		boton2.onClick[close]
 		
 	}
 	

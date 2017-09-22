@@ -1,23 +1,58 @@
 package ar.edu.unq.domino.arena.menu
 
-import org.uqbar.arena.widgets.Panel
-import org.uqbar.arena.aop.windows.TransactionalDialog
-import org.uqbar.arena.windows.WindowOwner
-import org.uqbar.arena.layout.VerticalLayout
-import ar.edu.unq.domino.sistema.Sistema
-import org.uqbar.arena.widgets.tables.Table
-import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
-import org.uqbar.arena.widgets.tables.Column
-import org.uqbar.arena.widgets.Button
-import ar.edu.unq.domino.Pizzas.Promocion
-import ar.edu.unq.domino.Pizzas.Ingrediente
+import org.uqbar.arena.bindings.NotNullObservable
 import org.uqbar.arena.layout.HorizontalLayout
+import org.uqbar.arena.widgets.Button
 import org.uqbar.arena.widgets.Label
+import org.uqbar.arena.widgets.Panel
+import org.uqbar.arena.widgets.tables.Column
+import org.uqbar.arena.widgets.tables.Table
+import org.uqbar.arena.windows.Dialog
+import org.uqbar.arena.windows.WindowOwner
+import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
+import ar.edu.unq.domino.sistema.Sistema
+import ar.edu.unq.domino.Pizzas.Ingrediente
+import org.uqbar.arena.layout.VerticalLayout
+import ar.edu.unq.domino.Pizzas.Promocion
+import org.uqbar.arena.aop.windows.TransactionalDialog
 
 class MenuWindow extends TransactionalDialog<Sistema> {
 
-	new(WindowOwner owner, Sistema sistema) {
-		super(owner, sistema)
+	new(WindowOwner parent, Sistema model) {
+		super(parent, model)
+		modelObject.menu.buscar
+	}
+
+
+	def crearIngredienteWindow() {
+		this.openDialog(new CrearIngredienteWindow(this, modelObject.menu.ingredienteSeleccionado))
+	}
+
+	def openDialog(Dialog<?> dialog) {
+		dialog.open
+	}
+
+	def protected createResultsGrid(Panel mainPanel) {
+		this.crearTablaIngrediente(new Table<Ingrediente>(mainPanel, Ingrediente) => [
+			numberVisibleRows = 6
+			items <=> "menu.ingredientes"
+			value <=> "menu.ingredienteSeleccionado"
+		])
+	}
+
+	def void describeResultsGrid(Table<Ingrediente> table) {
+		new Column<Ingrediente>(table) => [
+			title = "Nombre"
+			fixedSize = 250
+			bindContentsToProperty("nombre")
+		]
+
+		new Column<Ingrediente>(table) => [
+			title = "Precio"
+			fixedSize = 100
+			bindContentsToProperty("precio")
+		]
+
 	}
 
 	override protected createFormPanel(Panel mainPanel) {
@@ -52,6 +87,7 @@ class MenuWindow extends TransactionalDialog<Sistema> {
 		this.crearTablaPromo(tablePromos)
 
 		this.crearBotonesLaterales(panelPromos2)
+		
 
 		// Panel Ingredientes
 		val panelIngredientes = new Panel(panel) => [
@@ -99,17 +135,25 @@ class MenuWindow extends TransactionalDialog<Sistema> {
 		new Button(botonesLateralesPanel) => [
 			caption = 'Crear'
 			width = 75
+			onClick[this.openDialog(new CrearIngredienteWindow(this, new Ingrediente))]
 		]
 
-		new Button(botonesLateralesPanel) => [
+		var edit = new Button(botonesLateralesPanel) => [
 			caption = 'Editar'
 			width = 75
+			onClick [|this.editarIngrediente]
 		]
 
-		new Button(botonesLateralesPanel) => [
+		var remove = new Button(botonesLateralesPanel) => [
 			caption = 'Eliminar'
 			width = 75
+			onClick [|this.quitarIngrediente]
 		]
+
+		// Deshabilitar los botones si no hay ningún elemento seleccionado en la grilla.
+		var elementSelected = new NotNullObservable("menu.ingredienteSeleccionado")
+		edit.bindEnabled(elementSelected)
+		remove.bindEnabled(elementSelected)
 	}
 
 	// Creación de tablas
@@ -140,6 +184,14 @@ class MenuWindow extends TransactionalDialog<Sistema> {
 			fixedSize = 120
 			bindContentsToProperty("precio")
 		]
+	}
+
+	def editarIngrediente() {
+		new CrearIngredienteWindow(this, modelObject.menu.ingredienteSeleccionado)
+	}
+
+	def quitarIngrediente() {
+		modelObject.menu.quitarIngrediente(modelObject.menu.ingredienteSeleccionado)
 	}
 
 }

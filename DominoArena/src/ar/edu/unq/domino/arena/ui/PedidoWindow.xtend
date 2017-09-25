@@ -1,4 +1,4 @@
-package ar.edu.unq.domino.arena.menu
+package ar.edu.unq.domino.arena.ui
 
 import org.uqbar.arena.widgets.Panel
 import ar.edu.unq.domino.sistema.Sistema
@@ -14,7 +14,7 @@ import org.uqbar.arena.widgets.Label
 import org.uqbar.arena.aop.windows.TransactionalDialog
 
 abstract class PedidoWindow extends TransactionalDialog<Sistema> {
-	
+
 	public Panel panel1
 	public Panel panel2
 	public Label label1
@@ -56,7 +56,7 @@ abstract class PedidoWindow extends TransactionalDialog<Sistema> {
 		boton1.width = 100
 		boton2.caption = ''
 		boton2.width = 100
-		
+
 	}
 
 	def menuWindow() {
@@ -66,12 +66,11 @@ abstract class PedidoWindow extends TransactionalDialog<Sistema> {
 	def pedidosCerradosWindow() {
 		this.openDialog(new PedidosCerradosWindow(this, modelObject))
 	}
-	
 
 	def openDialog(Dialog<?> dialog) {
 		dialog.open
 	}
-	
+
 	def pedidosAbiertosWindow() {
 		this.openDialog(new PedidosAbiertosWindow(this, modelObject))
 	}
@@ -81,26 +80,22 @@ abstract class PedidoWindow extends TransactionalDialog<Sistema> {
 		columna2 = new Column(tabla1)
 		columna3 = new Column(tabla1)
 		columna4 = new Column(tabla1)
-		
+
 		columna1.title = ""
 		columna1.fixedSize = 100
 		columna1.bindContentsToProperty("estado")
 		// CORREGIR!!!!!!!!
-		
 		columna2.title = ""
 		columna2.fixedSize = 100
 		columna2.bindContentsToProperty("estado")
-		
-		
+
 		columna3.title = ""
 		columna3.fixedSize = 100
 		columna3.bindContentsToProperty("monto")
-		
-		
+
 		columna4.title = ""
 		columna4.fixedSize = 100
 		columna4.bindContentsToProperty("fecha")
-		
 
 	}
 

@@ -1,5 +1,4 @@
-package ar.edu.unq.domino.arena.menu
-
+package ar.edu.unq.domino.arena.ui
 
 import org.uqbar.arena.windows.WindowOwner
 import ar.edu.unq.domino.sistema.Sistema
@@ -11,7 +10,7 @@ class PedidosCerradosWindow extends PedidoWindow {
 	new(WindowOwner owner, Sistema sistema) {
 		super(owner, sistema)
 	}
-	
+
 	override protected createFormPanel(Panel mainPanel) {
 		super.createFormPanel(mainPanel)
 		title = "Dominos Pizza"
@@ -26,7 +25,7 @@ class PedidosCerradosWindow extends PedidoWindow {
 		boton1.caption = 'Ver'
 		boton2.caption = "Volver"
 		boton2.onClick[close]
-		
+
 	}
-	
+
 }

@@ -1,4 +1,4 @@
-package ar.edu.unq.domino.arena.menu
+package ar.edu.unq.domino.arena.ui
 
 import org.uqbar.arena.windows.WindowOwner
 import ar.edu.unq.domino.sistema.Sistema

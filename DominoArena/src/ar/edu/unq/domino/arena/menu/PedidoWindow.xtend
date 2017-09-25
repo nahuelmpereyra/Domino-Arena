@@ -60,7 +60,7 @@ abstract class PedidoWindow extends TransactionalDialog<Sistema> {
 	}
 
 	def menuWindow() {
-		this.openDialog(new MenuWindow(this, modelObject))
+//		this.openDialog(new MenuWindow(this, modelObject))
 	}
 
 	def pedidosCerradosWindow() {

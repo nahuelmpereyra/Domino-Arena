@@ -53,8 +53,11 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 		val repoTamanios = ApplicationContext.instance.getSingleton(typeof(TamanioPromo)) as RepoTamanios
 
 		repoIngredientes => [
-			create("Morrón", 10)
 			create("Jamón", 15)
+			create("Ananá", 5)
+			create("Morrones", 10)
+			create("Queso", 20)
+
 		]
 
 		repoPromociones => [
@@ -63,25 +66,32 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 		]
 		repoClientes => [
 			create("Esteban", "Esthebam", "root", "estebanmatas13@gmail.com", "Av falsa 123")
-			create("Ramiro", "Shamainco", "root", "Shamainco@gmail.com", "Av falsa 1234")
+			create("Ramiro", "Shamainco", "root", "shamainco@gmail.com", "Av falsa 1234")
 
 		]
 		repoPedidos => [
 			create((repoClientes.search("Esthebam").get(0)), retiroLocal, "Cliente usual")
-			create((repoClientes.search("Shamainco").get(0)), retiroDelivery, "")
+			create((repoClientes.search("Shamainco").get(0)), retiroDelivery, "Cliente nuevo")
 			create2((repoClientes.search("Shamainco").get(0)), retiroLocal, "")
 		]
-		
+
 		repoPlatos => [
 			create("Napolitana", repoPromociones.search("Napolitana").get(0), tamanio, ingredientesExtra)
 		]
-		
+
 		repoEstados => [
-			estados
+			createCancelado
+			createEntregado
+			createEnViaje
+			createListoParaEnviar
+			createPreparando
 		]
-		
+
 		repoTamanios => [
-			tamanios
+			createChica
+			createFamiliar
+			createGrande
+			createPorcion
 		]
 
 	}

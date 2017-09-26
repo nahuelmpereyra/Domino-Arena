@@ -7,7 +7,7 @@ import ar.edu.unq.domino.Pizzas.Plato
 class CrearPlatoWindow extends EditarPlatoWindow {
 
 	new(WindowOwner parent) {
-		super(parent, new Buscador)
+		super(parent)
 
 	}
 

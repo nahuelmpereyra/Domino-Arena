@@ -12,6 +12,7 @@ import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.arena.windows.Dialog
+import org.uqbar.arena.bindings.NotNullObservable
 
 abstract class PedidoWindow extends TransactionalDialog<Buscador> {
 
@@ -75,6 +76,8 @@ abstract class PedidoWindow extends TransactionalDialog<Buscador> {
 	def pedidosAbiertosWindow() {
 		this.openDialog(new PedidosAbiertosWindow(this))
 	}
+
+
 
 	def crearTablaPedidosAbiertos(Table<Pedido> tabla1) {
 		columna1 = new Column(tabla1)

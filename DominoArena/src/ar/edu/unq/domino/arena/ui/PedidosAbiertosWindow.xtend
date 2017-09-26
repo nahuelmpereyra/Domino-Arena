@@ -9,6 +9,9 @@ import org.uqbar.arena.windows.WindowOwner
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
 import ar.edu.unq.domino.Pizzas.Pedido
 import org.uqbar.arena.bindings.NotNullObservable
+import org.uqbar.arena.widgets.TextBox
+import org.uqbar.commons.applicationContext.ApplicationContext
+import ar.edu.unq.domino.repo.RepoPedidos
 
 class PedidosAbiertosWindow extends PedidoWindow {
 
@@ -17,6 +20,7 @@ class PedidosAbiertosWindow extends PedidoWindow {
 
 	new(WindowOwner parent) {
 		super(parent)
+
 	}
 
 	override protected createFormPanel(Panel mainPanel) {
@@ -36,10 +40,9 @@ class PedidosAbiertosWindow extends PedidoWindow {
 		panelBotonesVerticales.layout = new VerticalLayout
 		panelHorizontal = new Panel(panelBotonesVerticales)
 		panelHorizontal.layout = new HorizontalLayout
-		
+
 		val elementSelectedPedido = new NotNullObservable("pedidoSeleccionado")
-		
-		
+
 		new Button(panelHorizontal) => [
 			caption = '<<<'
 			onClick[this.estadoAnterior(modelObject.pedidoSeleccionado)]
@@ -74,18 +77,18 @@ class PedidosAbiertosWindow extends PedidoWindow {
 		]
 
 	}
-	
+
 	def editarPedido() {
-		this.openDialog(new EditarPedidoWindow(this, modelObject))
+		this.openDialog(new EditarPedidoWindow(this, modelObject.pedidoSeleccionado))
+
 	}
-	
+
 	def estadoSiguiente(Pedido pedido) {
 		pedido.estado.siguiente(pedido)
 	}
-	
+
 	def estadoAnterior(Pedido pedido) {
 		pedido.estado.anterior(pedido)
 	}
-
 
 }

@@ -14,6 +14,7 @@ import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.WindowOwner
 
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
+import org.uqbar.arena.widgets.Label
 
 class MenuWindow extends TransactionalDialog<Buscador> {
 
@@ -24,7 +25,6 @@ class MenuWindow extends TransactionalDialog<Buscador> {
 
 	override def createMainTemplate(Panel mainPanel) {
 		title = "Dominos Pizza - Menú"
-
 		super.createMainTemplate(mainPanel)
 
 	}
@@ -40,6 +40,12 @@ class MenuWindow extends TransactionalDialog<Buscador> {
 	// ** RESULTADOS DE LA BUSQUEDA
 	// *************************************************************************
 	override def protected createFormPanel(Panel mainPanel) {
+		
+		new Label(mainPanel) => [
+			text = "Promos"
+			alignLeft
+			fontSize = 14
+		]
 
 		val tablaPromos = new Table<Promocion>(mainPanel, typeof(Promocion)) => [
 
@@ -69,6 +75,12 @@ class MenuWindow extends TransactionalDialog<Buscador> {
 			caption = "Eliminar"
 			onClick([|modelObject.eliminarPromocionSeleccionada])
 			bindEnabled(elementSelectedPromo)
+		]
+		
+		new Label(mainPanel) => [
+			text = "Ingredientes disponibles"
+			alignLeft
+			fontSize = 14
 		]
 
 		val tablaIngredientes = new Table<Ingrediente>(mainPanel, typeof(Ingrediente)) => [

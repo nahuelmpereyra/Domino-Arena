@@ -4,6 +4,7 @@ import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.windows.WindowOwner
 
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
+import org.uqbar.arena.bindings.NotNullObservable
 
 class PedidosCerradosWindow extends PedidoWindow {
 
@@ -22,15 +23,18 @@ class PedidosCerradosWindow extends PedidoWindow {
 
 		columna3.title = "Fecha"
 		columna3.fixedSize = 10
-		 columna4.title = "Tiempo de espera"
+		columna4.title = "Tiempo de espera"
 		columna4.fixedSize = 100
 		columna1.bindContentsToProperty("numero")
 		columna2.bindContentsToProperty("estado")
 		columna3.bindContentsToProperty("fecha")
 		columna4.bindContentsToProperty("tiempoEspera")
-		boton1.caption = 'Ver'
-		boton2.caption = "Volver"
-		boton2.onClick[close]
+		boton1.caption = "Volver"
+		boton1.onClick[close]
+		val elementSelectedPedido = new NotNullObservable("pedidoSeleccionado")
+		boton2.caption = 'Ver'
+		boton2.bindEnabled(elementSelectedPedido)
+
 
 	}
 

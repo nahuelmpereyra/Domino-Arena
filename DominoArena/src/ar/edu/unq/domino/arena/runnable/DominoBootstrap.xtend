@@ -12,16 +12,26 @@ import ar.edu.unq.domino.repo.RepoClientes
 import ar.edu.unq.domino.sistema.Cliente
 import ar.edu.unq.domino.Pizzas.Pedido
 import ar.edu.unq.domino.formasDeEnvio.RetiroLocal
-import ar.edu.unq.domino.formasDeEnvio.FormaDeRetiro
+import ar.edu.unq.domino.Pizzas.Plato
+import ar.edu.unq.domino.repo.RepoPlatos
+import ar.edu.unq.domino.Pizzas.IngredientesExtras
+import ar.edu.unq.domino.TamanioPizzas.Grande
+import ar.edu.unq.domino.repo.RepoEstados
+import ar.edu.unq.domino.EstadosDePedido.EstadoDePedido
+import ar.edu.unq.domino.formasDeEnvio.Delivery
+import ar.edu.unq.domino.TamanioPizzas.TamanioPromo
+import ar.edu.unq.domino.repo.RepoTamanios
 
 class DominoBootstrap extends CollectionBasedBootstrap {
-	FormaDeRetiro formaDeRetiro
 
 	new() {
 		ApplicationContext.instance.configureSingleton(typeof(Ingrediente), new RepoIngredientes)
 		ApplicationContext.instance.configureSingleton(typeof(Promocion), new RepoPromociones)
 		ApplicationContext.instance.configureSingleton(typeof(Cliente), new RepoClientes)
 		ApplicationContext.instance.configureSingleton(typeof(Pedido), new RepoPedidos)
+		ApplicationContext.instance.configureSingleton(typeof(Plato), new RepoPlatos)
+		ApplicationContext.instance.configureSingleton(typeof(EstadoDePedido), new RepoEstados)
+		ApplicationContext.instance.configureSingleton(typeof(TamanioPromo), new RepoTamanios)
 
 	}
 
@@ -34,7 +44,13 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 		val repoPromociones = ApplicationContext.instance.getSingleton(typeof(Promocion)) as RepoPromociones
 		val repoClientes = ApplicationContext.instance.getSingleton(typeof(Cliente)) as RepoClientes
 		val repoPedidos = ApplicationContext.instance.getSingleton(typeof(Pedido)) as RepoPedidos
-		val formaDeRetiro = new RetiroLocal
+		val retiroLocal = new RetiroLocal
+		val retiroDelivery = new Delivery
+		val repoPlatos = ApplicationContext.instance.getSingleton(typeof(Plato)) as RepoPlatos
+		val tamanio = new Grande
+		val ingredientesExtra = new IngredientesExtras
+		val repoEstados = ApplicationContext.instance.getSingleton(typeof(EstadoDePedido)) as RepoEstados
+		val repoTamanios = ApplicationContext.instance.getSingleton(typeof(TamanioPromo)) as RepoTamanios
 
 		repoIngredientes => [
 			create("Morrón", 10)
@@ -51,14 +67,23 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 
 		]
 		repoPedidos => [
-			create((repoClientes.search("Esthebam").get(0)), formaDeRetiro, "")
-			create((repoClientes.search("Shamainco").get(0)), formaDeRetiro, "")
-		 	create2((repoClientes.search("Shamainco").get(0)), formaDeRetiro, "")
+			create((repoClientes.search("Esthebam").get(0)), retiroLocal, "Cliente usual")
+			create((repoClientes.search("Shamainco").get(0)), retiroDelivery, "")
+			create2((repoClientes.search("Shamainco").get(0)), retiroLocal, "")
+		]
+		
+		repoPlatos => [
+			create("Napolitana", repoPromociones.search("Napolitana").get(0), tamanio, ingredientesExtra)
+		]
+		
+		repoEstados => [
+			estados
+		]
+		
+		repoTamanios => [
+			tamanios
 		]
 
-
- 
-	
 	}
 
 }

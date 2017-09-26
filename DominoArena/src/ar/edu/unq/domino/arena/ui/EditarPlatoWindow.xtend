@@ -1,33 +1,31 @@
 package ar.edu.unq.domino.arena.ui
 
 import org.uqbar.arena.aop.windows.TransactionalDialog
-import org.uqbar.arena.layout.VerticalLayout
 import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.arena.layout.ColumnLayout
 import org.uqbar.arena.widgets.Label
 import org.uqbar.arena.widgets.Selector
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
-import org.uqbar.arena.layout.HorizontalLayout
 import org.uqbar.arena.widgets.CheckBox
-import org.uqbar.arena.widgets.RadioSelector
 import org.uqbar.arena.widgets.Button
 import ar.edu.unq.domino.Pizzas.Promocion
 import org.uqbar.arena.bindings.ObservableProperty
 import ar.edu.unq.domino.appModel.Buscador
 import ar.edu.unq.domino.repo.RepoPromociones
-import ar.edu.unq.domino.Pizzas.Plato
 import ar.edu.unq.domino.TamanioPizzas.TamanioPromo
 import org.uqbar.commons.applicationContext.ApplicationContext
 import ar.edu.unq.domino.Pizzas.Ingrediente
 import ar.edu.unq.domino.repo.RepoIngredientes
-import ar.edu.unq.domino.Pizzas.DistribucionPizza
 import ar.edu.unq.domino.repo.RepoTamanios
+import ar.edu.unq.domino.distribuciones.DistribucionPizza
+import ar.edu.unq.domino.repo.RepoDistribuciones
+import ar.edu.unq.domino.Pizzas.Plato
 
 class EditarPlatoWindow extends TransactionalDialog<Buscador> {
 
-	new(WindowOwner owner) {
-		super(owner, new Buscador)
+	new(WindowOwner owner, Buscador model) {
+		super(owner, model)
 		title = defaultTitle
 	}
 
@@ -72,72 +70,6 @@ class EditarPlatoWindow extends TransactionalDialog<Buscador> {
 		]
 
 		this.mostrarIngredientes(mainPanel)
-
-	/*
-	 * 
-	 * 
-
-	 * val panel2 = new Panel(mainPanel) => [
-	 * 	layout = new VerticalLayout
-	 * ]
-
-	 * val panel3 = new Panel(panel2).layout = new HorizontalLayout
-
-	 * new CheckBox(panel3) => []
-
-	 * new Label(panel3).text = "Jamon"
-
-	 * new RadioSelector(panel3) => [
-	 * 	// Fijarse como utilizar esto bien.	 								
-	 * ]
-
-	 * val panel4 = new Panel(panel2).layout = new HorizontalLayout
-
-	 * new CheckBox(panel4) => []
-
-	 * new Label(panel4).text = "Anana"
-
-	 * new RadioSelector(panel4) => [
-	 * 	// Fijarse como utilizar esto bien.
-	 * ]
-
-	 * val panel5 = new Panel(panel2).layout = new HorizontalLayout
-
-	 * new CheckBox(panel5) => []
-
-	 * new Label(panel5).text = "Morrones"
-
-	 * new RadioSelector(panel5) => []
-
-	 * val panel6 = new Panel(panel2).layout = new HorizontalLayout
-
-	 * new CheckBox(panel6) => []
-
-	 * new Label(panel6).text = "Queso"
-
-	 * new RadioSelector(panel6) => []
-
-	 * val panelPrecio = new Panel(mainPanel).layout = new HorizontalLayout
-
-	 * new Label(panelPrecio).text = "Precio"
-
-	 * val panelFinal = new Panel(mainPanel).layout = new HorizontalLayout
-
-	 * new Button(panelFinal) => [
-	 * 	caption = 'Aceptar'
-	 * 	width = 60
-	 * 	onClick[]
-	 * ]
-
-	 * new Button(panelFinal) => [
-	 * 	caption = 'Cancelar'
-	 * 	width = 60
-	 * 	onClick[close]
-	 * ]
-
-	 * }
-
-	 */
 	}
 
 	def mostrarIngredientes(Panel panel) {
@@ -145,13 +77,16 @@ class EditarPlatoWindow extends TransactionalDialog<Buscador> {
 		var ingredientes = repoIngrediente.ingredientes
 
 		for (ingrediente : ingredientes) {
-			new CheckBox(formIng) => []
+			new CheckBox(formIng) => [
+				
+			]
 			new Label(formIng) => [
 				text = ingrediente.getNombre()
 			]
 			new Selector<DistribucionPizza>(formIng) => [
-
 				allowNull(false)
+				val propiedadDistribuciones = bindItems(new ObservableProperty(repoDistribuciones, "distribuciones"))
+				propiedadDistribuciones.adaptWith(typeof(DistribucionPizza), "nombre")
 			]
 		}
 
@@ -185,6 +120,10 @@ class EditarPlatoWindow extends TransactionalDialog<Buscador> {
 
 	def getRepoTamanios() {
 		ApplicationContext.instance.getSingleton(typeof(TamanioPromo)) as RepoTamanios
+	}
+	
+	def getRepoDistribuciones() {
+		ApplicationContext.instance.getSingleton(typeof(DistribucionPizza)) as RepoDistribuciones
 	}
 
 }

@@ -33,7 +33,7 @@ class PedidosAbiertosWindow extends PedidoWindow {
 
 		columna1.bindContentsToProperty("numero")
 		columna2.bindContentsToProperty("estado")
-		columna3.bindContentsToProperty("monto")
+		columna3.bindContentsToProperty("montoFinal")
 		columna4.bindContentsToProperty("fecha")
 
 		panelBotonesVerticales = new Panel(mainPanel)
@@ -79,7 +79,7 @@ class PedidosAbiertosWindow extends PedidoWindow {
 	}
 
 	def editarPedido() {
-		this.openDialog(new EditarPedidoWindow(this, modelObject.pedidoSeleccionado))
+		this.openDialog(new EditarPedidoWindow(this, modelObject))
 
 	}
 

@@ -21,6 +21,8 @@ import ar.edu.unq.domino.EstadosDePedido.EstadoDePedido
 import ar.edu.unq.domino.formasDeEnvio.Delivery
 import ar.edu.unq.domino.TamanioPizzas.TamanioPromo
 import ar.edu.unq.domino.repo.RepoTamanios
+import ar.edu.unq.domino.distribuciones.DistribucionPizza
+import ar.edu.unq.domino.repo.RepoDistribuciones
 
 class DominoBootstrap extends CollectionBasedBootstrap {
 
@@ -32,6 +34,7 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 		ApplicationContext.instance.configureSingleton(typeof(Plato), new RepoPlatos)
 		ApplicationContext.instance.configureSingleton(typeof(EstadoDePedido), new RepoEstados)
 		ApplicationContext.instance.configureSingleton(typeof(TamanioPromo), new RepoTamanios)
+		ApplicationContext.instance.configureSingleton(typeof(DistribucionPizza), new RepoDistribuciones)
 
 	}
 
@@ -51,6 +54,7 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 		val ingredientesExtra = new IngredientesExtras
 		val repoEstados = ApplicationContext.instance.getSingleton(typeof(EstadoDePedido)) as RepoEstados
 		val repoTamanios = ApplicationContext.instance.getSingleton(typeof(TamanioPromo)) as RepoTamanios
+		val repoDistribuciones = ApplicationContext.instance.getSingleton(typeof(DistribucionPizza)) as RepoDistribuciones
 
 		repoIngredientes => [
 			create("Jamón", 15)
@@ -63,21 +67,28 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 		repoPromociones => [
 			create("Jamón y morron", 150)
 			create("Napolitana", 145)
+			create("Huevo", 500)
 		]
 		repoClientes => [
 			create("Esteban", "Esthebam", "root", "estebanmatas13@gmail.com", "Av falsa 123")
 			create("Ramiro", "Shamainco", "root", "shamainco@gmail.com", "Av falsa 1234")
 
 		]
+		
+		repoPlatos => [
+			create("Napolitana", repoPromociones.search("Napolitana").get(0), tamanio, ingredientesExtra)
+			create("Huevo", repoPromociones.search("Huevo").get(0), tamanio, ingredientesExtra)
+		]
+		
 		repoPedidos => [
 			create((repoClientes.search("Esthebam").get(0)), retiroLocal, "Cliente usual")
 			create((repoClientes.search("Shamainco").get(0)), retiroDelivery, "Cliente nuevo")
 			create2((repoClientes.search("Shamainco").get(0)), retiroLocal, "")
+			buscarPedidosAbiertos.get(0).agregarPlato(repoPlatos.search("Napolitana").get(0))
+			buscarPedidosAbiertos.get(0).agregarPlato(repoPlatos.search("Huevo").get(0))
 		]
-
-		repoPlatos => [
-			create("Napolitana", repoPromociones.search("Napolitana").get(0), tamanio, ingredientesExtra)
-		]
+		
+		// 1 Pedido  -->   1 o varios Platos  -->  1 Promo
 
 		repoEstados => [
 			createCancelado
@@ -92,6 +103,12 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 			createFamiliar
 			createGrande
 			createPorcion
+		]
+		
+		repoDistribuciones => [
+			createToda
+			createMitadIzquierda
+			createMitadDerecha
 		]
 
 	}

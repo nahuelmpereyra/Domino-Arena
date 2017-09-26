@@ -22,11 +22,13 @@ import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.commons.applicationContext.ApplicationContext
 
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
+import ar.edu.unq.domino.appModel.Buscador
 
-class EditarPedidoWindow extends TransactionalDialog<Pedido> {
+class EditarPedidoWindow extends TransactionalDialog<Buscador> {
 
-	new(WindowOwner owner, Pedido model) {
+	new(WindowOwner owner, Buscador model) {
 		super(owner, model)
+		modelObject.search
 	}
 
 	override def createMainTemplate(Panel mainPanel) {
@@ -51,7 +53,7 @@ class EditarPedidoWindow extends TransactionalDialog<Pedido> {
 	override protected createFormPanel(Panel mainPanel) {
 
 		new Label(mainPanel) => [
-			title = "Pedido " + modelObject.numero
+			title = "Pedido " + modelObject.pedidoSeleccionado.numero
 			alignLeft
 			fontSize = 14
 		]
@@ -77,31 +79,31 @@ class EditarPedidoWindow extends TransactionalDialog<Pedido> {
 
 		val tablaPlatos = new Table<Plato>(mainPanel, typeof(Plato)) => [
 
-			items <=> "platos"
-			value <=> "platos"
+			items <=> "pedidoSeleccionado.platos"
+			value <=> "platoSeleccionado"
 			numberVisibleRows = 4
 		]
 		this.describeResultsGridPlato(tablaPlatos)
-
-		// Deshabilitar los botones si no hay ningún elemento seleccionado en la grilla.
+	
 		val actionsPanelPlato = new Panel(mainPanel).layout = new HorizontalLayout
 
 		new Button(actionsPanelPlato) => [
 			caption = "Agregar"
 			onClick([|this.agregarPlato])
 		]
-
-		val elementSelectedPlato = new NotNullObservable("platos")
+		
+		// Deshabilitar los botones si no hay ningún elemento seleccionado en la grilla.
+		val elementSelectedPlato = new NotNullObservable("platoSeleccionado")
 
 		new Button(actionsPanelPlato) => [
 			caption = "Editar"
-			// onClick([|this.modificarPlato])
+			onClick([|this.modificarPlato])
 			bindEnabled(elementSelectedPlato)
 		]
 
 		new Button(actionsPanelPlato) => [
 			caption = "Eliminar"
-			// onClick([|modelObject.eliminarPlatoSeleccionado])
+			onClick([|modelObject.eliminarPlatoSeleccionado])
 			bindEnabled(elementSelectedPlato)
 		]
 
@@ -113,7 +115,7 @@ class EditarPedidoWindow extends TransactionalDialog<Pedido> {
 
 		new TextBox(mainPanel) => [
 			height = 100
-			value <=> "aclaracion"
+			value <=> "pedidoSeleccionado.aclaracion"
 		]
 
 		var panelDatos = new Panel(mainPanel).layout = new ColumnLayout(2)
@@ -124,7 +126,7 @@ class EditarPedidoWindow extends TransactionalDialog<Pedido> {
 		]
 
 		new Label(panelDatos) => [
-			value <=> "cliente.nombre"
+			value <=> "clienteSeleccionado.nombre"
 		]
 
 		new Label(panelDatos) => [
@@ -133,7 +135,7 @@ class EditarPedidoWindow extends TransactionalDialog<Pedido> {
 		]
 
 		new Label(panelDatos) => [
-			value <=> "formaDeRetiro.costoEnvio"
+			value <=> "pedidoSeleccionado.formaDeRetiro.costoEnvio"
 		]
 
 		new Label(panelDatos) => [
@@ -142,7 +144,7 @@ class EditarPedidoWindow extends TransactionalDialog<Pedido> {
 		]
 
 		new Label(panelDatos) => [
-			value <=> "montoFinal"
+			value <=> "pedidoSeleccionado.montoFinal"
 		]
 
 		new Label(panelDatos) => [
@@ -151,7 +153,7 @@ class EditarPedidoWindow extends TransactionalDialog<Pedido> {
 		]
 
 		new Label(panelDatos) => [
-			value <=> "fecha"
+			value <=> "pedidoSeleccionado.fecha"
 		]
 
 	}
@@ -182,10 +184,15 @@ class EditarPedidoWindow extends TransactionalDialog<Pedido> {
 	// ** Acciones
 	// ********************************************************	
 	def agregarPlato() {
-		this.openDialog(new CrearPlatoWindow(this))
+		this.openDialog(new CrearPlatoWindow(this, modelObject))
+	}
+	
+	def void modificarPlato() {
+		this.openDialog(new EditarPlatoWindow(this, modelObject))
 	}
 
 	def openDialog(Dialog<?> dialog) {
+		dialog.onAccept[|modelObject.search]
 		dialog.open
 	}
 
@@ -197,12 +204,4 @@ class EditarPedidoWindow extends TransactionalDialog<Pedido> {
 		ApplicationContext.instance.getSingleton(typeof(Pedido)) as RepoPedidos
 	}
 
-	override executeTask() {
-		if (modelObject.isNew) {
-			repoPedidos.create(modelObject)
-		} else {
-			repoPedidos.update(modelObject)
-		}
-		super.executeTask()
-	}
 }

@@ -1,12 +1,13 @@
 package ar.edu.unq.domino.arena.ui
 
-import org.uqbar.arena.windows.WindowOwner
-import ar.edu.unq.domino.sistema.Sistema
-import org.uqbar.arena.widgets.Panel
-import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
-import org.uqbar.arena.widgets.Button
-import org.uqbar.arena.layout.VerticalLayout
 import org.uqbar.arena.layout.HorizontalLayout
+import org.uqbar.arena.layout.VerticalLayout
+import org.uqbar.arena.widgets.Button
+import org.uqbar.arena.widgets.Panel
+import org.uqbar.arena.windows.WindowOwner
+
+import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
+import ar.edu.unq.domino.Pizzas.Pedido
 
 class PedidosAbiertosWindow extends PedidoWindow {
 
@@ -14,8 +15,8 @@ class PedidosAbiertosWindow extends PedidoWindow {
 
 	Panel panelHorizontal
 
-	new(WindowOwner owner, Sistema sistema) {
-		super(owner, sistema)
+	new(WindowOwner parent) {
+		super(parent)
 	}
 
 	override protected createFormPanel(Panel mainPanel) {
@@ -23,11 +24,13 @@ class PedidosAbiertosWindow extends PedidoWindow {
 		title = "Dominos Pizza"
 		label1.text = "Pedidos Abiertos"
 		label1.alignLeft
-		tabla1.items <=> "pedidos"
-		columna1.title = "Pedido"
-		columna2.title = "Estado"
-		columna3.title = "Monto"
-		columna4.title = "Hora"
+		tabla1.items <=> "resultadosPedidosAbiertos"
+		tabla1.value <=> "pedidoSeleccionado"
+
+		columna1.bindContentsToProperty("numero")
+		columna2.bindContentsToProperty("estado")
+		columna3.bindContentsToProperty("monto")
+		columna4.bindContentsToProperty("fecha")
 
 		panelBotonesVerticales = new Panel(mainPanel)
 		panelBotonesVerticales.layout = new VerticalLayout
@@ -35,6 +38,7 @@ class PedidosAbiertosWindow extends PedidoWindow {
 		panelHorizontal.layout = new HorizontalLayout
 		new Button(panelHorizontal) => [
 			caption = '<<<'
+			
 		]
 		new Button(panelHorizontal) => [
 			caption = '>>>'
@@ -57,5 +61,9 @@ class PedidosAbiertosWindow extends PedidoWindow {
 			width = 100
 			onClick [close]
 		]
+
 	}
+	
+
+
 }

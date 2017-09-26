@@ -3,6 +3,8 @@ package ar.edu.unq.domino.arena.runnable
 import org.uqbar.arena.Application
 import org.uqbar.arena.windows.Window
 import ar.edu.unq.domino.arena.ui.MenuWindow
+import ar.edu.unq.domino.arena.ui.PedidosAbiertosWindow
+import ar.edu.unq.domino.arena.ui.PedidoWindow
 
 class DominoApplication extends Application {
 
@@ -16,6 +18,6 @@ class DominoApplication extends Application {
 	}
 
 	override protected Window<?> createMainWindow() {
-		return new MenuWindow(this)
+		return new PedidosAbiertosWindow(this)
 	}
 }

@@ -1,6 +1,9 @@
 package ar.edu.unq.domino.arena.ui
 
 import ar.edu.unq.domino.Pizzas.Ingrediente
+import ar.edu.unq.domino.Pizzas.Promocion
+import ar.edu.unq.domino.appModel.Buscador
+import org.uqbar.arena.aop.windows.TransactionalDialog
 import org.uqbar.arena.bindings.NotNullObservable
 import org.uqbar.arena.layout.HorizontalLayout
 import org.uqbar.arena.widgets.Button
@@ -8,13 +11,11 @@ import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.windows.Dialog
-import org.uqbar.arena.windows.SimpleWindow
 import org.uqbar.arena.windows.WindowOwner
-import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
-import ar.edu.unq.domino.Pizzas.Promocion
-import ar.edu.unq.domino.appModel.Buscador
 
-class MenuWindow extends SimpleWindow<Buscador> {
+import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
+
+class MenuWindow extends TransactionalDialog<Buscador> {
 
 	new(WindowOwner parent) {
 		super(parent, new Buscador)

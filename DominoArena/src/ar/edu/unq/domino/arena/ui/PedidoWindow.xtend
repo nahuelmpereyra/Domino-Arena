@@ -1,19 +1,19 @@
 package ar.edu.unq.domino.arena.ui
 
-import org.uqbar.arena.widgets.Panel
-import ar.edu.unq.domino.sistema.Sistema
-import org.uqbar.arena.windows.WindowOwner
+import ar.edu.unq.domino.Pizzas.Pedido
+import ar.edu.unq.domino.appModel.Buscador
+import org.uqbar.arena.aop.windows.TransactionalDialog
 import org.uqbar.arena.layout.HorizontalLayout
 import org.uqbar.arena.layout.VerticalLayout
-import org.uqbar.arena.widgets.tables.Table
-import ar.edu.unq.domino.Pizzas.Pedido
-import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.Button
-import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.widgets.Label
-import org.uqbar.arena.aop.windows.TransactionalDialog
+import org.uqbar.arena.widgets.Panel
+import org.uqbar.arena.widgets.tables.Column
+import org.uqbar.arena.widgets.tables.Table
+import org.uqbar.arena.windows.WindowOwner
+import org.uqbar.arena.windows.Dialog
 
-abstract class PedidoWindow extends TransactionalDialog<Sistema> {
+abstract class PedidoWindow extends TransactionalDialog<Buscador> {
 
 	public Panel panel1
 	public Panel panel2
@@ -26,8 +26,9 @@ abstract class PedidoWindow extends TransactionalDialog<Sistema> {
 	public Button boton1
 	public Button boton2
 
-	new(WindowOwner owner, Sistema sistema) {
-		super(owner, sistema)
+	new(WindowOwner owner) {
+		super(owner, new Buscador)
+		modelObject.search
 
 	}
 
@@ -41,7 +42,6 @@ abstract class PedidoWindow extends TransactionalDialog<Sistema> {
 		panel1 = new Panel(mainPanel)
 		panel1.layout = new VerticalLayout
 
-		title = ""
 		label1 = new Label(panel1)
 		tabla1 = new Table<Pedido>(panel1, typeof(Pedido))
 		this.crearTablaPedidosAbiertos(tabla1)
@@ -60,42 +60,39 @@ abstract class PedidoWindow extends TransactionalDialog<Sistema> {
 	}
 
 	def menuWindow() {
-//		this.openDialog(new MenuWindow(this, modelObject))
+		this.openDialog(new MenuWindow(this))
 	}
 
 	def pedidosCerradosWindow() {
-		this.openDialog(new PedidosCerradosWindow(this, modelObject))
+		this.openDialog(new PedidosCerradosWindow(this))
 	}
 
 	def openDialog(Dialog<?> dialog) {
+		dialog.onAccept[|modelObject.search]
 		dialog.open
 	}
 
 	def pedidosAbiertosWindow() {
-		this.openDialog(new PedidosAbiertosWindow(this, modelObject))
+		this.openDialog(new PedidosAbiertosWindow(this))
 	}
 
-	def crearTablaPedidosAbiertos(Table<Pedido> table) {
+	def crearTablaPedidosAbiertos(Table<Pedido> tabla1) {
 		columna1 = new Column(tabla1)
 		columna2 = new Column(tabla1)
 		columna3 = new Column(tabla1)
 		columna4 = new Column(tabla1)
 
-		columna1.title = ""
+		columna1.title = "Pedido"
 		columna1.fixedSize = 100
-		columna1.bindContentsToProperty("estado")
-		// CORREGIR!!!!!!!!
-		columna2.title = ""
+
+		columna2.title = "Estado"
 		columna2.fixedSize = 100
-		columna2.bindContentsToProperty("estado")
 
-		columna3.title = ""
+		columna3.title = "Monto"
 		columna3.fixedSize = 100
-		columna3.bindContentsToProperty("monto")
 
-		columna4.title = ""
+		columna4.title = "Hora"
 		columna4.fixedSize = 100
-		columna4.bindContentsToProperty("fecha")
 
 	}
 

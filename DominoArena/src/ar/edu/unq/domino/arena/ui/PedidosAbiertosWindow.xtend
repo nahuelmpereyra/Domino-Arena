@@ -51,6 +51,7 @@ class PedidosAbiertosWindow extends PedidoWindow {
 		new Button(panelHorizontal) => [
 			caption = '>>>'
 			onClick[this.estadoSiguiente(modelObject.pedidoSeleccionado)]
+			disableOnError
 			bindEnabled(elementSelectedPedido)
 		]
 		new Button(panelBotonesVerticales) => [

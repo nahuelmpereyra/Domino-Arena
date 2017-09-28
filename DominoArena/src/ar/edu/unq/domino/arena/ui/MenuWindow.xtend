@@ -11,7 +11,6 @@ import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.WindowOwner
-
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
 import org.uqbar.arena.widgets.Label
 import ar.edu.unq.domino.appModel.MenuAppModel
@@ -49,13 +48,12 @@ class MenuWindow extends TransactionalDialog<MenuAppModel> {
 
 		val tablaPromos = new Table<Promocion>(mainPanel, typeof(Promocion)) => [
 
-			items <=> "appModelPromociones.promociones"
-			value <=> "appModelPromociones.promoSeleccionada"
+			items <=> "promociones"
+			value <=> "promoSeleccionada"
 			numberVisibleRows = 4
 		]
 		this.describeResultsGridPromo(tablaPromos)
 
-		// Deshabilitar los botones si no hay ningún elemento seleccionado en la grilla.
 		val actionsPanelPromocion = new Panel(mainPanel).layout = new HorizontalLayout
 
 		new Button(actionsPanelPromocion) => [
@@ -63,7 +61,8 @@ class MenuWindow extends TransactionalDialog<MenuAppModel> {
 			onClick([|this.crearPromo])
 		]
 
-		val elementSelectedPromo = new NotNullObservable("appModelPromociones.promoSeleccionada")
+		// Deshabilitar los botones si no hay ningún elemento seleccionado en la grilla.
+		val elementSelectedPromo = new NotNullObservable("promoSeleccionada")
 
 		new Button(actionsPanelPromocion) => [
 			caption = "Editar"
@@ -73,7 +72,7 @@ class MenuWindow extends TransactionalDialog<MenuAppModel> {
 
 		new Button(actionsPanelPromocion) => [
 			caption = "Eliminar"
-			onClick([|modelObject.appModelPromociones.eliminarPromocionSeleccionada])
+			onClick([|modelObject.eliminarPromocionSeleccionada])
 			bindEnabled(elementSelectedPromo)
 		]
 		
@@ -85,13 +84,12 @@ class MenuWindow extends TransactionalDialog<MenuAppModel> {
 
 		val tablaIngredientes = new Table<Ingrediente>(mainPanel, typeof(Ingrediente)) => [
 
-			items <=> "appModelIngredientes.ingredientes"
-			value <=> "appModelIngredientes.ingredienteSeleccionado"
+			items <=> "ingredientes"
+			value <=> "ingredienteSeleccionado"
 			numberVisibleRows = 4
 		]
 		this.describeResultsGridIngrediente(tablaIngredientes)
 
-		// Deshabilitar los botones si no hay ningún elemento seleccionado en la grilla.
 		val actionsPanelIngrediente = new Panel(mainPanel).layout = new HorizontalLayout
 
 		new Button(actionsPanelIngrediente) => [
@@ -99,7 +97,8 @@ class MenuWindow extends TransactionalDialog<MenuAppModel> {
 			onClick([|this.crearIngrediente])
 		]
 
-		val elementSelectedIngrediente = new NotNullObservable("appModelIngredientes.ingredienteSeleccionado")
+		// Deshabilitar los botones si no hay ningún elemento seleccionado en la grilla.
+		val elementSelectedIngrediente = new NotNullObservable("ingredienteSeleccionado")
 
 		new Button(actionsPanelIngrediente) => [
 			caption = "Editar"
@@ -109,7 +108,7 @@ class MenuWindow extends TransactionalDialog<MenuAppModel> {
 
 		new Button(actionsPanelIngrediente) => [
 			caption = "Eliminar"
-			onClick([|modelObject.appModelIngredientes.eliminarIngredienteSeleccionado])
+			onClick([|modelObject.eliminarIngredienteSeleccionado])
 			bindEnabled(elementSelectedIngrediente)
 		]
 
@@ -154,7 +153,7 @@ class MenuWindow extends TransactionalDialog<MenuAppModel> {
 	}
 
 	def void modificarIngrediente() {
-		this.openDialog(new EditarIngredienteWindow(this, modelObject.appModelIngredientes.ingredienteSeleccionado))
+		this.openDialog(new EditarIngredienteWindow(this, modelObject.ingredienteSeleccionado))
 	}
 
 	def void crearPromo() {
@@ -162,7 +161,7 @@ class MenuWindow extends TransactionalDialog<MenuAppModel> {
 	}
 
 	def void modificarPromo() {
-		this.openDialog(new EditarPromoWindow(this, modelObject.appModelPromociones.promoSeleccionada))
+		this.openDialog(new EditarPromoWindow(this, modelObject.promoSeleccionada))
 	}
 
 	def openDialog(Dialog<?> dialog) {

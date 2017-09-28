@@ -19,13 +19,13 @@ import ar.edu.unq.domino.repo.RepoIngredientes
 import ar.edu.unq.domino.repo.RepoTamanios
 import ar.edu.unq.domino.distribuciones.DistribucionPizza
 import ar.edu.unq.domino.repo.RepoDistribuciones
-import ar.edu.unq.domino.appModel.MenuAppModel
 import ar.edu.unq.domino.repo.RepoPlatos
 import ar.edu.unq.domino.Pizzas.Plato
+import ar.edu.unq.domino.appModel.DominoAppModel
 
-class EditarPlatoWindow extends TransactionalDialog<MenuAppModel> {
+class EditarPlatoWindow extends TransactionalDialog<DominoAppModel> {
 
-	new(WindowOwner owner, MenuAppModel model) {
+	new(WindowOwner owner, DominoAppModel model) {
 		super(owner, model)
 		title = defaultTitle
 	}
@@ -52,7 +52,7 @@ class EditarPlatoWindow extends TransactionalDialog<MenuAppModel> {
 
 		new Selector<Promocion>(form) => [
 			allowNull(false)
-			value <=> "appModelPromociones.promoSeleccionada"
+			value <=> "appModelMenu.promoSeleccionada"
 			val propiedadPromociones = bindItems(new ObservableProperty(repoPromo, "promociones"))
 			propiedadPromociones.adaptWith(typeof(Promocion), "nombrePromo") // No sé por qué no puedo hacer "nombrePromo" + "precioBase".toString
 		]

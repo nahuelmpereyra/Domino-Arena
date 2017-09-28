@@ -1,14 +1,14 @@
 package ar.edu.unq.domino.arena.ui
-import ar.edu.unq.domino.appModel.MenuAppModel
 import org.uqbar.arena.widgets.Label
 import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.windows.WindowOwner
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
 import java.awt.Color
+import ar.edu.unq.domino.appModel.DominoAppModel
 
 class VerPedidoWindow extends EditarPedidoWindow {
 
-	new(WindowOwner owner, MenuAppModel model) {
+	new(WindowOwner owner, DominoAppModel model) {
 		super(owner, model)
 	}
 

@@ -3,9 +3,7 @@ package ar.edu.unq.domino.arena.runnable
 import org.uqbar.arena.Application
 import org.uqbar.arena.windows.Window
 import ar.edu.unq.domino.arena.ui.PedidosAbiertosWindow
-import ar.edu.unq.domino.arena.ui.MenuWindow
-import ar.edu.unq.domino.arena.ui.EditarPedidoWindow
-import ar.edu.unq.domino.arena.ui.EditarPlatoWindow
+
 
 class DominoApplication extends Application {
 

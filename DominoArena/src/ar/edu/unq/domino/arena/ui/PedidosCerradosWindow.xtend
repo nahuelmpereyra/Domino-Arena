@@ -5,7 +5,6 @@ import org.uqbar.arena.windows.WindowOwner
 
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
 import org.uqbar.arena.bindings.NotNullObservable
-import java.time.LocalDateTime
 
 class PedidosCerradosWindow extends PedidoWindow {
 

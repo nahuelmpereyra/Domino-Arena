@@ -1,17 +1,20 @@
 package ar.edu.unq.domino.arena.ui
 
+import ar.edu.unq.domino.Pizzas.Menu
 import ar.edu.unq.domino.Pizzas.Promocion
-import org.uqbar.arena.windows.WindowOwner
-import org.uqbar.arena.aop.windows.TransactionalDialog
-import org.uqbar.arena.widgets.Panel
-import org.uqbar.arena.layout.ColumnLayout
-import org.uqbar.arena.widgets.Label
-import org.uqbar.arena.widgets.TextBox
-import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
-import org.uqbar.arena.widgets.NumericField
-import org.uqbar.arena.widgets.Button
-import org.uqbar.commons.applicationContext.ApplicationContext
+import ar.edu.unq.domino.repo.RepoMenu
 import ar.edu.unq.domino.repo.RepoPromociones
+import org.uqbar.arena.aop.windows.TransactionalDialog
+import org.uqbar.arena.layout.ColumnLayout
+import org.uqbar.arena.widgets.Button
+import org.uqbar.arena.widgets.Label
+import org.uqbar.arena.widgets.NumericField
+import org.uqbar.arena.widgets.Panel
+import org.uqbar.arena.widgets.TextBox
+import org.uqbar.arena.windows.WindowOwner
+import org.uqbar.commons.applicationContext.ApplicationContext
+
+import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
 
 class EditarPromoWindow extends TransactionalDialog<Promocion> {
 
@@ -60,11 +63,17 @@ class EditarPromoWindow extends TransactionalDialog<Promocion> {
 		ApplicationContext.instance.getSingleton(typeof(Promocion)) as RepoPromociones
 	}
 
+
+	def getRepoMenu() {
+		ApplicationContext.instance.getSingleton(typeof(Menu)) as RepoMenu
+	}
+
+
 	override executeTask() {
 		if (modelObject.isNew) {
-			repoPromociones.create(modelObject.nombrePromo, modelObject.precioBase)
+			Menu.instance.agregarPromo(modelObject)
 		} else {
-			repoPromociones.update(modelObject)
+			Menu.instance.modificarPromo(modelObject)
 		}
 		super.executeTask()
 	}

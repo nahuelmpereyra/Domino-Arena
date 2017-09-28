@@ -22,11 +22,11 @@ import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.commons.applicationContext.ApplicationContext
 
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
-import ar.edu.unq.domino.appModel.MenuAppModel
+import ar.edu.unq.domino.appModel.DominoAppModel
 
-class EditarPedidoWindow extends TransactionalDialog<MenuAppModel> {
+class EditarPedidoWindow extends TransactionalDialog<DominoAppModel> {
 
-	new(WindowOwner owner, MenuAppModel model) {
+	new(WindowOwner owner, DominoAppModel model) {
 		super(owner, model)
 		modelObject.search
 		title = defaultTitle
@@ -144,7 +144,7 @@ class EditarPedidoWindow extends TransactionalDialog<MenuAppModel> {
 		this.describeResultsGridPlato(tablaPlatos)
 	}
 	
-		def crearBotonesPlatos(Panel panel){
+	def crearBotonesPlatos(Panel panel){
 		val actionsPanelPlato = new Panel(panel).layout = new HorizontalLayout
 
 		new Button(actionsPanelPlato) => [

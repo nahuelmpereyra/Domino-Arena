@@ -62,7 +62,7 @@ class EditarPromoWindow extends TransactionalDialog<Promocion> {
 
 	override executeTask() {
 		if (modelObject.isNew) {
-			repoPromociones.create(modelObject)
+			repoPromociones.create(modelObject.nombrePromo, modelObject.precioBase)
 		} else {
 			repoPromociones.update(modelObject)
 		}

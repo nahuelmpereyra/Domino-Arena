@@ -11,7 +11,6 @@ import org.uqbar.arena.widgets.CheckBox
 import org.uqbar.arena.widgets.Button
 import ar.edu.unq.domino.Pizzas.Promocion
 import org.uqbar.arena.bindings.ObservableProperty
-import ar.edu.unq.domino.appModel.Buscador
 import ar.edu.unq.domino.repo.RepoPromociones
 import ar.edu.unq.domino.TamanioPizzas.TamanioPromo
 import org.uqbar.commons.applicationContext.ApplicationContext
@@ -20,11 +19,13 @@ import ar.edu.unq.domino.repo.RepoIngredientes
 import ar.edu.unq.domino.repo.RepoTamanios
 import ar.edu.unq.domino.distribuciones.DistribucionPizza
 import ar.edu.unq.domino.repo.RepoDistribuciones
+import ar.edu.unq.domino.appModel.MenuAppModel
+import ar.edu.unq.domino.repo.RepoPlatos
 import ar.edu.unq.domino.Pizzas.Plato
 
-class EditarPlatoWindow extends TransactionalDialog<Buscador> {
+class EditarPlatoWindow extends TransactionalDialog<MenuAppModel> {
 
-	new(WindowOwner owner, Buscador model) {
+	new(WindowOwner owner, MenuAppModel model) {
 		super(owner, model)
 		title = defaultTitle
 	}
@@ -33,10 +34,16 @@ class EditarPlatoWindow extends TransactionalDialog<Buscador> {
 		"Editar Plato"
 	}
 
-	override protected createFormPanel(Panel mainPanel) {
+	override protected createFormPanel(Panel mainPanel) {	
 
-		val form = new Panel(mainPanel).layout = new ColumnLayout(2)
-
+		this.mostrarPromo(mainPanel)
+		this.mostrarTamanio(mainPanel)
+		this.mostrarIngredientes(mainPanel)
+		this.mostrarPrecio(mainPanel)
+	}
+	
+	def mostrarPromo(Panel panel){
+		val form = new Panel(panel).layout = new ColumnLayout(2)
 		new Label(form) => [
 			text = "Pizza"
 			alignLeft
@@ -45,11 +52,14 @@ class EditarPlatoWindow extends TransactionalDialog<Buscador> {
 
 		new Selector<Promocion>(form) => [
 			allowNull(false)
-			value <=> "promoSeleccionada"
+			value <=> "appModelPromociones.promoSeleccionada"
 			val propiedadPromociones = bindItems(new ObservableProperty(repoPromo, "promociones"))
 			propiedadPromociones.adaptWith(typeof(Promocion), "nombrePromo") // No sé por qué no puedo hacer "nombrePromo" + "precioBase".toString
 		]
-
+	}
+	
+	def mostrarTamanio(Panel panel){
+		val form = new Panel(panel).layout = new ColumnLayout(2)
 		new Label(form) => [
 			text = "Tamaño"
 			alignLeft
@@ -58,21 +68,21 @@ class EditarPlatoWindow extends TransactionalDialog<Buscador> {
 
 		new Selector<TamanioPromo>(form) => [
 			allowNull(false)
-			value <=> "tamanioSeleccionado"
+			value <=> "appModelTamanios.tamanioSeleccionado"
 			val propiedadTamanio = bindItems(new ObservableProperty(repoTamanios, "tamanios"))
 			propiedadTamanio.adaptWith(typeof(TamanioPromo), "nombre")
 		]
+	}
 
+	def mostrarIngredientes(Panel panel) {
+		
+		val form = new Panel(panel).layout = new ColumnLayout(2)
 		new Label(form) => [
 			text = "Agregados"
 			alignLeft
 			fontSize = 11
 		]
-
-		this.mostrarIngredientes(mainPanel)
-	}
-
-	def mostrarIngredientes(Panel panel) {
+		
 		val formIng = new Panel(panel).layout = new ColumnLayout(3)
 		var ingredientes = repoIngrediente.ingredientes
 
@@ -91,6 +101,21 @@ class EditarPlatoWindow extends TransactionalDialog<Buscador> {
 		}
 
 	}
+	
+	def mostrarPrecio(Panel panel){
+		val form = new Panel(panel).layout = new ColumnLayout(2)
+		new Label(form) => [
+			text = "Precio"
+			alignLeft
+			fontSize = 11
+		]
+		
+		new Label(form) => [
+			value <=> "appModelPedidos.platoSeleccionado.precio"
+			alignCenter
+			fontSize = 11
+		]
+	}
 
 	override protected void addActions(Panel actions) {
 		new Button(actions) => [
@@ -106,10 +131,16 @@ class EditarPlatoWindow extends TransactionalDialog<Buscador> {
 		]
 	}
 
-	// PRECIO
+
+	
+	
+	
+	
+	
 	// ********************************************************
 	// ** Acciones
 	// ********************************************************	
+	
 	def getRepoIngrediente() {
 		ApplicationContext.instance.getSingleton(typeof(Ingrediente)) as RepoIngredientes
 	}
@@ -124,6 +155,19 @@ class EditarPlatoWindow extends TransactionalDialog<Buscador> {
 	
 	def getRepoDistribuciones() {
 		ApplicationContext.instance.getSingleton(typeof(DistribucionPizza)) as RepoDistribuciones
+	}
+
+	def getRepoPlatos() {
+		ApplicationContext.instance.getSingleton(typeof(Plato)) as RepoPlatos
+	}
+	
+	override executeTask() {
+		if (modelObject.appModelPedidos.platoSeleccionado.isNew) {
+			repoPlatos.create(modelObject.appModelPedidos.platoSeleccionado)
+		} else {
+			repoPlatos.update(modelObject.appModelPedidos.platoSeleccionado)
+		}
+		super.executeTask()
 	}
 
 }

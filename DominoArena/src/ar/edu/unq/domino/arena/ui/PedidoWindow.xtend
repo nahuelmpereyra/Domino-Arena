@@ -1,7 +1,6 @@
 package ar.edu.unq.domino.arena.ui
 
 import ar.edu.unq.domino.Pizzas.Pedido
-import ar.edu.unq.domino.appModel.Buscador
 import org.uqbar.arena.aop.windows.TransactionalDialog
 import org.uqbar.arena.layout.HorizontalLayout
 import org.uqbar.arena.layout.VerticalLayout
@@ -12,9 +11,9 @@ import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.arena.windows.Dialog
-import org.uqbar.arena.bindings.NotNullObservable
+import ar.edu.unq.domino.appModel.MenuAppModel
 
-abstract class PedidoWindow extends TransactionalDialog<Buscador> {
+abstract class PedidoWindow extends TransactionalDialog<MenuAppModel> {
 
 	public Panel panel1
 	public Panel panel2
@@ -28,7 +27,7 @@ abstract class PedidoWindow extends TransactionalDialog<Buscador> {
 	public Button boton2
 
 	new(WindowOwner owner) {
-		super(owner, new Buscador)
+		super(owner, new MenuAppModel)
 		modelObject.search
 
 	}
@@ -61,7 +60,7 @@ abstract class PedidoWindow extends TransactionalDialog<Buscador> {
 	}
 
 	def menuWindow() {
-		this.openDialog(new MenuWindow(this))
+		this.openDialog(new MenuWindow(this, new MenuAppModel))
 	}
 
 	def pedidosCerradosWindow() {

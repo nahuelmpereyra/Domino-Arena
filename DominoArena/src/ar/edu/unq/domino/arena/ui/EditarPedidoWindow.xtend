@@ -22,15 +22,19 @@ import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.commons.applicationContext.ApplicationContext
 
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
-import ar.edu.unq.domino.appModel.Buscador
+import ar.edu.unq.domino.appModel.MenuAppModel
 
-class EditarPedidoWindow extends TransactionalDialog<Buscador> {
+class EditarPedidoWindow extends TransactionalDialog<MenuAppModel> {
 
-	new(WindowOwner owner, Buscador model) {
+	new(WindowOwner owner, MenuAppModel model) {
 		super(owner, model)
 		modelObject.search
+		title = defaultTitle
 	}
 
+	def defaultTitle() {
+		"Pedido " + modelObject.appModelPedidos.pedidoSeleccionado.numero
+	}
 	override def createMainTemplate(Panel mainPanel) {
 		super.createMainTemplate(mainPanel)
 
@@ -51,111 +55,20 @@ class EditarPedidoWindow extends TransactionalDialog<Buscador> {
 	}
 
 	override protected createFormPanel(Panel mainPanel) {
-
-		new Label(mainPanel) => [
-			title = "Pedido " + modelObject.pedidoSeleccionado.numero
-			alignLeft
-			fontSize = 14
-		]
-
+		
 		new Label(mainPanel) => [
 			text = "Estado"
 			alignLeft
 			fontSize = 14
 		]
-
-		new Selector<EstadoDePedido>(mainPanel) => [
-			allowNull(false)
-			val propiedadEstados = bindItems(new ObservableProperty(repoEstados, "estados"))
-			propiedadEstados.adaptWith(typeof(EstadoDePedido), "nombre")
-
-		]
-
-		new Label(mainPanel) => [
-			text = "Platos"
-			alignLeft
-			fontSize = 14
-		]
-
-		val tablaPlatos = new Table<Plato>(mainPanel, typeof(Plato)) => [
-
-			items <=> "pedidoSeleccionado.platos"
-			value <=> "platoSeleccionado"
-			numberVisibleRows = 4
-		]
-		this.describeResultsGridPlato(tablaPlatos)
-	
-		val actionsPanelPlato = new Panel(mainPanel).layout = new HorizontalLayout
-
-		new Button(actionsPanelPlato) => [
-			caption = "Agregar"
-			onClick([|this.agregarPlato])
-		]
 		
-		// Deshabilitar los botones si no hay ningún elemento seleccionado en la grilla.
-		val elementSelectedPlato = new NotNullObservable("platoSeleccionado")
-
-		new Button(actionsPanelPlato) => [
-			caption = "Editar"
-			onClick([|this.modificarPlato])
-			bindEnabled(elementSelectedPlato)
-		]
-
-		new Button(actionsPanelPlato) => [
-			caption = "Eliminar"
-			onClick([|modelObject.eliminarPlatoSeleccionado])
-			bindEnabled(elementSelectedPlato)
-		]
-
-		new Label(mainPanel) => [
-			text = "Aclaraciones"
-			alignLeft
-			fontSize = 14
-		]
-
-		new TextBox(mainPanel) => [
-			height = 100
-			value <=> "pedidoSeleccionado.aclaracion"
-		]
-
-		var panelDatos = new Panel(mainPanel).layout = new ColumnLayout(2)
-
-		new Label(panelDatos) => [
-			text = "Cliente"
-			alignLeft
-		]
-
-		new Label(panelDatos) => [
-			value <=> "clienteSeleccionado.nombre"
-		]
-
-		new Label(panelDatos) => [
-			text = "Costo de envio"
-			alignLeft
-		]
-
-		new Label(panelDatos) => [
-			value <=> "pedidoSeleccionado.formaDeRetiro.costoEnvio"
-		]
-
-		new Label(panelDatos) => [
-			text = "Monto total"
-			alignLeft
-		]
-
-		new Label(panelDatos) => [
-			value <=> "pedidoSeleccionado.montoFinal"
-		]
-
-		new Label(panelDatos) => [
-			text = "Fecha"
-			alignLeft
-		]
-
-		new Label(panelDatos) => [
-			value <=> "pedidoSeleccionado.fecha"
-		]
-
+		this.crearSelectorEstado(mainPanel)
+		this.crearPanelPlatos(mainPanel)
+		this.crearBotonesPlatos(mainPanel)
+		this.crearPanelAclaraciones(mainPanel)
+		this.crearPanelDatos(mainPanel)
+		
+	
 	}
 
 	def void describeResultsGridPlato(Table<Plato> table) {
@@ -204,4 +117,108 @@ class EditarPedidoWindow extends TransactionalDialog<Buscador> {
 		ApplicationContext.instance.getSingleton(typeof(Pedido)) as RepoPedidos
 	}
 
+	def crearSelectorEstado(Panel panel){
+				new Selector<EstadoDePedido>(panel) => [
+			allowNull(false)
+			val propiedadEstados = bindItems(new ObservableProperty(repoEstados, "estados"))
+			propiedadEstados.adaptWith(typeof(EstadoDePedido), "nombre")
+
+		]
+	}
+	
+	def crearPanelPlatos(Panel panel){
+		new Label(panel) => [
+			text = "Platos"
+			alignLeft
+			fontSize = 14
+		]
+
+		val tablaPlatos = new Table<Plato>(panel, typeof(Plato)) => [
+
+			items <=> "appModelPedidos.pedidoSeleccionado.platos"
+			value <=> "appModelPedidos.platoSeleccionado"
+			
+			numberVisibleRows = 8
+		]
+		
+		this.describeResultsGridPlato(tablaPlatos)
+	}
+	
+		def crearBotonesPlatos(Panel panel){
+		val actionsPanelPlato = new Panel(panel).layout = new HorizontalLayout
+
+		new Button(actionsPanelPlato) => [
+			caption = "Agregar"
+			onClick([|this.agregarPlato])
+		]
+				
+		
+		// Deshabilitar los botones si no hay ningún elemento seleccionado en la grilla.
+		val elementSelectedPlato = new NotNullObservable("appModelPedidos.platoSeleccionado")
+
+		new Button(actionsPanelPlato) => [
+			caption = "Editar"
+			onClick([|this.modificarPlato])
+			bindEnabled(elementSelectedPlato)
+		]
+
+		new Button(actionsPanelPlato) => [
+			caption = "Eliminar"
+			onClick([|modelObject.appModelPedidos.eliminarPlatoSeleccionado])
+			bindEnabled(elementSelectedPlato)
+		]
+	}
+	
+	def crearPanelAclaraciones(Panel panel){
+		new Label(panel) => [
+			text = "Aclaraciones"
+			alignLeft
+			fontSize = 14
+		]
+
+		new TextBox(panel) => [
+			height = 100
+			value <=> "appModelPedidos.pedidoSeleccionado.aclaracion"
+		]
+	}
+	
+	def crearPanelDatos(Panel panel){
+		var panelDatos = new Panel(panel).layout = new ColumnLayout(2)
+
+		new Label(panelDatos) => [
+			text = "Cliente"
+			alignLeft
+		]
+
+		new Label(panelDatos) => [
+			value <=> "appModelPedidos.pedidoSeleccionado.cliente.nombre"
+		]
+
+		new Label(panelDatos) => [
+			text = "Costo de envio"
+			alignLeft
+		]
+
+		new Label(panelDatos) => [
+			value <=> "appModelPedidos.pedidoSeleccionado.formaDeRetiro.costoEnvio"
+		]
+
+		new Label(panelDatos) => [
+			text = "Monto total"
+			alignLeft
+		]
+
+		new Label(panelDatos) => [
+			value <=> "appModelPedidos.pedidoSeleccionado.montoFinal"
+		]
+
+		new Label(panelDatos) => [
+			text = "Fecha"
+			alignLeft
+		]
+
+		new Label(panelDatos) => [
+			value <=> "appModelPedidos.pedidoSeleccionado.fecha"
+		]
+	}
 }

@@ -2,7 +2,6 @@ package ar.edu.unq.domino.arena.ui
 
 import ar.edu.unq.domino.Pizzas.Ingrediente
 import ar.edu.unq.domino.Pizzas.Promocion
-import ar.edu.unq.domino.appModel.Buscador
 import org.uqbar.arena.aop.windows.TransactionalDialog
 import org.uqbar.arena.bindings.NotNullObservable
 import org.uqbar.arena.layout.HorizontalLayout
@@ -15,11 +14,12 @@ import org.uqbar.arena.windows.WindowOwner
 
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
 import org.uqbar.arena.widgets.Label
+import ar.edu.unq.domino.appModel.MenuAppModel
 
-class MenuWindow extends TransactionalDialog<Buscador> {
+class MenuWindow extends TransactionalDialog<MenuAppModel> {
 
-	new(WindowOwner parent) {
-		super(parent, new Buscador)
+	new(WindowOwner parent, MenuAppModel model) {
+		super(parent, model)
 		modelObject.search
 	}
 
@@ -49,8 +49,8 @@ class MenuWindow extends TransactionalDialog<Buscador> {
 
 		val tablaPromos = new Table<Promocion>(mainPanel, typeof(Promocion)) => [
 
-			items <=> "resultadosPromocion"
-			value <=> "promoSeleccionada"
+			items <=> "appModelPromociones.promociones"
+			value <=> "appModelPromociones.promoSeleccionada"
 			numberVisibleRows = 4
 		]
 		this.describeResultsGridPromo(tablaPromos)
@@ -63,7 +63,7 @@ class MenuWindow extends TransactionalDialog<Buscador> {
 			onClick([|this.crearPromo])
 		]
 
-		val elementSelectedPromo = new NotNullObservable("promoSeleccionada")
+		val elementSelectedPromo = new NotNullObservable("appModelPromociones.promoSeleccionada")
 
 		new Button(actionsPanelPromocion) => [
 			caption = "Editar"
@@ -73,7 +73,7 @@ class MenuWindow extends TransactionalDialog<Buscador> {
 
 		new Button(actionsPanelPromocion) => [
 			caption = "Eliminar"
-			onClick([|modelObject.eliminarPromocionSeleccionada])
+			onClick([|modelObject.appModelPromociones.eliminarPromocionSeleccionada])
 			bindEnabled(elementSelectedPromo)
 		]
 		
@@ -85,8 +85,8 @@ class MenuWindow extends TransactionalDialog<Buscador> {
 
 		val tablaIngredientes = new Table<Ingrediente>(mainPanel, typeof(Ingrediente)) => [
 
-			items <=> "resultadosIngrediente"
-			value <=> "ingredienteSeleccionado"
+			items <=> "appModelIngredientes.ingredientes"
+			value <=> "appModelIngredientes.ingredienteSeleccionado"
 			numberVisibleRows = 4
 		]
 		this.describeResultsGridIngrediente(tablaIngredientes)
@@ -99,7 +99,7 @@ class MenuWindow extends TransactionalDialog<Buscador> {
 			onClick([|this.crearIngrediente])
 		]
 
-		val elementSelectedIngrediente = new NotNullObservable("ingredienteSeleccionado")
+		val elementSelectedIngrediente = new NotNullObservable("appModelIngredientes.ingredienteSeleccionado")
 
 		new Button(actionsPanelIngrediente) => [
 			caption = "Editar"
@@ -109,7 +109,7 @@ class MenuWindow extends TransactionalDialog<Buscador> {
 
 		new Button(actionsPanelIngrediente) => [
 			caption = "Eliminar"
-			onClick([|modelObject.eliminarIngredienteSeleccionado])
+			onClick([|modelObject.appModelIngredientes.eliminarIngredienteSeleccionado])
 			bindEnabled(elementSelectedIngrediente)
 		]
 
@@ -154,7 +154,7 @@ class MenuWindow extends TransactionalDialog<Buscador> {
 	}
 
 	def void modificarIngrediente() {
-		this.openDialog(new EditarIngredienteWindow(this, modelObject.ingredienteSeleccionado))
+		this.openDialog(new EditarIngredienteWindow(this, modelObject.appModelIngredientes.ingredienteSeleccionado))
 	}
 
 	def void crearPromo() {
@@ -162,7 +162,7 @@ class MenuWindow extends TransactionalDialog<Buscador> {
 	}
 
 	def void modificarPromo() {
-		this.openDialog(new EditarPromoWindow(this, modelObject.promoSeleccionada))
+		this.openDialog(new EditarPromoWindow(this, modelObject.appModelPromociones.promoSeleccionada))
 	}
 
 	def openDialog(Dialog<?> dialog) {

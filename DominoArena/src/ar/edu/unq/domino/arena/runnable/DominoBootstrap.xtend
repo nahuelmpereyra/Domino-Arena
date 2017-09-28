@@ -70,8 +70,8 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 			create("Huevo", 500)
 		]
 		repoClientes => [
-			create("Esteban", "Esthebam", "root", "estebanmatas13@gmail.com", "Av falsa 123")
-			create("Ramiro", "Shamainco", "root", "shamainco@gmail.com", "Av falsa 1234")
+			create("Esteban", "Esthebam", "root", "nahuelmpereyra@gmail.com", "Av falsa 123")
+			create("Ramiro", "Shamainco", "root", "nahuelmpereyra@gmail.com", "Av falsa 1234")
 
 		]
 		
@@ -81,7 +81,7 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 		]
 		
 		repoPedidos => [
-			create((repoClientes.search("Esthebam").get(0)), retiroLocal, "Cliente usual")
+			create((repoClientes.search("Esthebam").get(0)), retiroDelivery, "Delivery")
 			create((repoClientes.search("Shamainco").get(0)), retiroDelivery, "Cliente nuevo")
 			create2((repoClientes.search("Shamainco").get(0)), retiroLocal, "")
 			buscarPedidosAbiertos.get(0).agregarPlato(repoPlatos.search("Napolitana").get(0))

@@ -2,7 +2,6 @@ package ar.edu.unq.domino.arena.ui
 
 import ar.edu.unq.domino.Pizzas.Menu
 import ar.edu.unq.domino.Pizzas.Promocion
-import ar.edu.unq.domino.repo.RepoMenu
 import ar.edu.unq.domino.repo.RepoPromociones
 import org.uqbar.arena.aop.windows.TransactionalDialog
 import org.uqbar.arena.layout.ColumnLayout
@@ -61,11 +60,6 @@ class EditarPromoWindow extends TransactionalDialog<Promocion> {
 
 	def getRepoPromociones() {
 		ApplicationContext.instance.getSingleton(typeof(Promocion)) as RepoPromociones
-	}
-
-
-	def getRepoMenu() {
-		ApplicationContext.instance.getSingleton(typeof(Menu)) as RepoMenu
 	}
 
 

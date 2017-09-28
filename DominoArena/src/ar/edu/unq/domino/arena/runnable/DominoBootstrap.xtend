@@ -17,7 +17,6 @@ import ar.edu.unq.domino.repo.RepoClientes
 import ar.edu.unq.domino.repo.RepoDistribuciones
 import ar.edu.unq.domino.repo.RepoEstados
 import ar.edu.unq.domino.repo.RepoIngredientes
-import ar.edu.unq.domino.repo.RepoMenu
 import ar.edu.unq.domino.repo.RepoPedidos
 import ar.edu.unq.domino.repo.RepoPlatos
 import ar.edu.unq.domino.repo.RepoPromociones
@@ -29,7 +28,6 @@ import org.uqbar.commons.applicationContext.ApplicationContext
 class DominoBootstrap extends CollectionBasedBootstrap {
 
 	new() {
-		ApplicationContext.instance.configureSingleton(typeof(Menu), new RepoMenu)
 		ApplicationContext.instance.configureSingleton(typeof(Ingrediente), new RepoIngredientes)
 		ApplicationContext.instance.configureSingleton(typeof(Promocion), new RepoPromociones)
 		ApplicationContext.instance.configureSingleton(typeof(Cliente), new RepoClientes)
@@ -46,7 +44,6 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 	 * 
 	 */
 	override run() {
-		val repoMenu = ApplicationContext.instance.getSingleton(typeof(Menu)) as RepoMenu
 		val repoIngredientes = ApplicationContext.instance.getSingleton(typeof(Ingrediente)) as RepoIngredientes
 		val repoPromociones = ApplicationContext.instance.getSingleton(typeof(Promocion)) as RepoPromociones
 		val repoClientes = ApplicationContext.instance.getSingleton(typeof(Cliente)) as RepoClientes

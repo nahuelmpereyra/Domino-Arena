@@ -67,8 +67,6 @@ class EditarPedidoWindow extends TransactionalDialog<DominoAppModel> {
 		this.crearBotonesPlatos(mainPanel)
 		this.crearPanelAclaraciones(mainPanel)
 		this.crearPanelDatos(mainPanel)
-		
-	
 	}
 
 	def void describeResultsGridPlato(Table<Plato> table) {
@@ -118,12 +116,12 @@ class EditarPedidoWindow extends TransactionalDialog<DominoAppModel> {
 	}
 
 	def crearSelectorEstado(Panel panel){
-				new Selector<EstadoDePedido>(panel) => [
-			allowNull(false)
-			val propiedadEstados = bindItems(new ObservableProperty(repoEstados, "estados"))
-			propiedadEstados.adaptWith(typeof(EstadoDePedido), "nombre")
-
-		]
+//		new Selector<EstadoDePedido>(panel) => [
+//			allowNull(false)
+//			val propiedadEstados = bindItems(new ObservableProperty(repoEstados, "estados"))
+//			propiedadEstados.adaptWith(typeof(EstadoDePedido), "nombre")
+//			value <=> "appModelPedidos.pedidoSeleccionado.estado"
+//		]
 	}
 	
 	def crearPanelPlatos(Panel panel){

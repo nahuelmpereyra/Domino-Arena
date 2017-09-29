@@ -60,7 +60,7 @@ abstract class PedidoWindow extends TransactionalDialog<DominoAppModel> {
 	}
 
 	def menuWindow() {
-		this.openDialog(new MenuWindow(this, modelObject.appModelMenu))
+		new MenuWindow(this, modelObject.appModelMenu).open
 	}
 
 	def pedidosCerradosWindow() {

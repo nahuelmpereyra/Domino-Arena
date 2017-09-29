@@ -2,20 +2,21 @@ package ar.edu.unq.domino.arena.ui
 
 import ar.edu.unq.domino.Pizzas.Ingrediente
 import ar.edu.unq.domino.Pizzas.Promocion
-import org.uqbar.arena.aop.windows.TransactionalDialog
+import ar.edu.unq.domino.appModel.MenuAppModel
 import org.uqbar.arena.bindings.NotNullObservable
 import org.uqbar.arena.layout.HorizontalLayout
 import org.uqbar.arena.widgets.Button
+import org.uqbar.arena.widgets.Label
 import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.windows.Dialog
+import org.uqbar.arena.windows.SimpleWindow
 import org.uqbar.arena.windows.WindowOwner
-import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
-import org.uqbar.arena.widgets.Label
-import ar.edu.unq.domino.appModel.MenuAppModel
 
-class MenuWindow extends TransactionalDialog<MenuAppModel> {
+import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
+
+class MenuWindow extends SimpleWindow<MenuAppModel> {
 
 	new(WindowOwner parent, MenuAppModel model) {
 		super(parent, model)

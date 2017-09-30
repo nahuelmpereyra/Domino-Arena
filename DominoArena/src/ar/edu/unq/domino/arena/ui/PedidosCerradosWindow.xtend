@@ -5,6 +5,7 @@ import org.uqbar.arena.windows.WindowOwner
 
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
 import org.uqbar.arena.bindings.NotNullObservable
+import ar.edu.unq.domino.appModel.EditarPedidoAppModel
 
 class PedidosCerradosWindow extends PedidoWindow {
 
@@ -18,8 +19,8 @@ class PedidosCerradosWindow extends PedidoWindow {
 		label1.text = "Pedidos cerrados"
 		label1.alignLeft
 
-		tabla1.items <=> "appModelPedidos.pedidosCerrados"
-		tabla1.value <=> "appModelPedidos.pedidoSeleccionado"
+		tabla1.items <=> "pedidosCerrados"
+		tabla1.value <=> "pedidoCerradoSeleccionado"
 
 		columna3.title = "Fecha"
 		columna3.fixedSize = 150
@@ -32,7 +33,7 @@ class PedidosCerradosWindow extends PedidoWindow {
 
 		boton1.caption = "Volver"
 		boton1.onClick[close]
-		val elementSelectedPedido = new NotNullObservable("appModelPedidos.pedidoSeleccionado")
+		val elementSelectedPedido = new NotNullObservable("pedidoCerradoSeleccionado")
 		boton2.caption = 'Ver'
 		boton2.bindEnabled(elementSelectedPedido)
 		boton2.onClick[|this.verPedido]
@@ -44,7 +45,7 @@ class PedidosCerradosWindow extends PedidoWindow {
 	// ********************************************************
 	
 	def verPedido() {
-		this.openDialog(new VerPedidoWindow(this, modelObject))
+		this.openDialog(new VerPedidoWindow(this, new EditarPedidoAppModel(modelObject.pedidoCerradoSeleccionado)))
 	}
 
 }

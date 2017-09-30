@@ -36,9 +36,6 @@ class MenuWindow extends SimpleWindow<MenuAppModel> {
 		]
 	}
 
-	// *************************************************************************
-	// ** RESULTADOS DE LA BUSQUEDA
-	// *************************************************************************
 	override def protected createFormPanel(Panel mainPanel) {
 		
 		new Label(mainPanel) => [

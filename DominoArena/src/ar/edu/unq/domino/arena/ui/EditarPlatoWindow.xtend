@@ -1,28 +1,29 @@
 package ar.edu.unq.domino.arena.ui
 
-import org.uqbar.arena.aop.windows.TransactionalDialog
-import org.uqbar.arena.widgets.Panel
-import org.uqbar.arena.windows.WindowOwner
-import org.uqbar.arena.layout.ColumnLayout
-import org.uqbar.arena.widgets.Label
-import org.uqbar.arena.widgets.Selector
-import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
-import org.uqbar.arena.widgets.CheckBox
-import org.uqbar.arena.widgets.Button
+import ar.edu.unq.domino.Pizzas.Menu
 import ar.edu.unq.domino.Pizzas.Promocion
-import org.uqbar.arena.bindings.ObservableProperty
-import ar.edu.unq.domino.repo.RepoPromociones
 import ar.edu.unq.domino.TamanioPizzas.TamanioPromo
-import org.uqbar.commons.applicationContext.ApplicationContext
-import ar.edu.unq.domino.Pizzas.Ingrediente
-import ar.edu.unq.domino.repo.RepoIngredientes
-import ar.edu.unq.domino.repo.RepoTamanios
 import ar.edu.unq.domino.distribuciones.DistribucionPizza
 import ar.edu.unq.domino.repo.RepoDistribuciones
-import ar.edu.unq.domino.repo.RepoPlatos
-import ar.edu.unq.domino.Pizzas.Plato
-import ar.edu.unq.domino.appModel.DominoAppModel
+import ar.edu.unq.domino.repo.RepoTamanios
+import org.uqbar.arena.aop.windows.TransactionalDialog
+import org.uqbar.arena.bindings.ObservableProperty
+import org.uqbar.arena.layout.ColumnLayout
+import org.uqbar.arena.widgets.Button
+import org.uqbar.arena.widgets.CheckBox
+import org.uqbar.arena.widgets.Label
+import org.uqbar.arena.widgets.Panel
+import org.uqbar.arena.widgets.Selector
+import org.uqbar.arena.windows.WindowOwner
+import org.uqbar.commons.applicationContext.ApplicationContext
 
+import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
+import ar.edu.unq.domino.Pizzas.Pedido
+import ar.edu.unq.domino.repo.RepoPedidos
+/*
+ * 
+ * Hay que crear un PlatoAppModel.
+ * 
 class EditarPlatoWindow extends TransactionalDialog<DominoAppModel> {
 
 	new(WindowOwner owner, DominoAppModel model) {
@@ -53,8 +54,10 @@ class EditarPlatoWindow extends TransactionalDialog<DominoAppModel> {
 		new Selector<Promocion>(form) => [
 			allowNull(false)
 			value <=> "appModelMenu.promoSeleccionada"
-			val propiedadPromociones = bindItems(new ObservableProperty(repoPromo, "promociones"))
-			propiedadPromociones.adaptWith(typeof(Promocion), "nombrePromo") // No sé por qué no puedo hacer "nombrePromo" + "precioBase".toString
+			// Ver binding en función del appModel que se utilice.
+			
+			// val propiedadPromociones = bindItems(new ObservableProperty(repoPromo, "promociones"))
+			//propiedadPromociones.adaptWith(typeof(Promocion), "nombrePromo") // No sé por qué no puedo hacer "nombrePromo" + "precioBase".toString
 		]
 	}
 	
@@ -84,7 +87,7 @@ class EditarPlatoWindow extends TransactionalDialog<DominoAppModel> {
 		]
 		
 		val formIng = new Panel(panel).layout = new ColumnLayout(3)
-		var ingredientes = repoIngrediente.ingredientes
+		var ingredientes = Menu.instance.ingredientes
 
 		for (ingrediente : ingredientes) {
 			new CheckBox(formIng) => [
@@ -140,14 +143,6 @@ class EditarPlatoWindow extends TransactionalDialog<DominoAppModel> {
 	// ********************************************************
 	// ** Acciones
 	// ********************************************************	
-	
-	def getRepoIngrediente() {
-		ApplicationContext.instance.getSingleton(typeof(Ingrediente)) as RepoIngredientes
-	}
-
-	def getRepoPromo() {
-		ApplicationContext.instance.getSingleton(typeof(Promocion)) as RepoPromociones
-	}
 
 	def getRepoTamanios() {
 		ApplicationContext.instance.getSingleton(typeof(TamanioPromo)) as RepoTamanios
@@ -156,18 +151,13 @@ class EditarPlatoWindow extends TransactionalDialog<DominoAppModel> {
 	def getRepoDistribuciones() {
 		ApplicationContext.instance.getSingleton(typeof(DistribucionPizza)) as RepoDistribuciones
 	}
-
-	def getRepoPlatos() {
-		ApplicationContext.instance.getSingleton(typeof(Plato)) as RepoPlatos
-	}
 	
-	override executeTask() {
-		if (modelObject.appModelPedidos.platoSeleccionado.isNew) {
-			repoPlatos.create(modelObject.appModelPedidos.platoSeleccionado)
-		} else {
-			repoPlatos.update(modelObject.appModelPedidos.platoSeleccionado)
-		}
-		super.executeTask()
+	def getRepoPedidos() {
+		ApplicationContext.instance.getSingleton(typeof(Pedido)) as RepoPedidos
 	}
+
 
 }
+
+* /
+*/

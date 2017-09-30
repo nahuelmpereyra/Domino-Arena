@@ -7,33 +7,30 @@ import ar.edu.unq.domino.repo.RepoEstados
 import ar.edu.unq.domino.repo.RepoPedidos
 import org.uqbar.arena.aop.windows.TransactionalDialog
 import org.uqbar.arena.bindings.NotNullObservable
-import org.uqbar.arena.bindings.ObservableProperty
 import org.uqbar.arena.layout.ColumnLayout
 import org.uqbar.arena.layout.HorizontalLayout
 import org.uqbar.arena.widgets.Button
 import org.uqbar.arena.widgets.Label
 import org.uqbar.arena.widgets.Panel
-import org.uqbar.arena.widgets.Selector
 import org.uqbar.arena.widgets.TextBox
 import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.commons.applicationContext.ApplicationContext
-
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
-import ar.edu.unq.domino.appModel.DominoAppModel
+import ar.edu.unq.domino.appModel.EditarPedidoAppModel
 
-class EditarPedidoWindow extends TransactionalDialog<DominoAppModel> {
+class EditarPedidoWindow extends TransactionalDialog<EditarPedidoAppModel> {
 
-	new(WindowOwner owner, DominoAppModel model) {
+	new(WindowOwner owner, EditarPedidoAppModel model) {
 		super(owner, model)
-		modelObject.search
 		title = defaultTitle
+		
 	}
 
 	def defaultTitle() {
-		"Pedido " + modelObject.appModelPedidos.pedidoSeleccionado.numero
+		"Pedido " + modelObject.pedidoSeleccionado.numero 
 	}
 	override def createMainTemplate(Panel mainPanel) {
 		super.createMainTemplate(mainPanel)
@@ -56,13 +53,6 @@ class EditarPedidoWindow extends TransactionalDialog<DominoAppModel> {
 
 	override protected createFormPanel(Panel mainPanel) {
 		
-		new Label(mainPanel) => [
-			text = "Estado"
-			alignLeft
-			fontSize = 14
-		]
-		
-		this.crearSelectorEstado(mainPanel)
 		this.crearPanelPlatos(mainPanel)
 		this.crearBotonesPlatos(mainPanel)
 		this.crearPanelAclaraciones(mainPanel)
@@ -95,17 +85,16 @@ class EditarPedidoWindow extends TransactionalDialog<DominoAppModel> {
 	// ** Acciones
 	// ********************************************************	
 	def agregarPlato() {
-		this.openDialog(new CrearPlatoWindow(this, modelObject))
+//		this.openDialog(new CrearPlatoWindow(this, modelObject.pedidoSeleccionado))
 	}
 	
 	def void modificarPlato() {
-		this.openDialog(new EditarPlatoWindow(this, modelObject))
+//		this.openDialog(new EditarPlatoWindow(this, modelObject.pedidoSeleccionado))
 	}
 
 	def openDialog(Dialog<?> dialog) {
-		dialog.onAccept[|modelObject.search]
 		dialog.open
-	}
+}
 
 	def getRepoEstados() {
 		ApplicationContext.instance.getSingleton(typeof(EstadoDePedido)) as RepoEstados
@@ -115,15 +104,7 @@ class EditarPedidoWindow extends TransactionalDialog<DominoAppModel> {
 		ApplicationContext.instance.getSingleton(typeof(Pedido)) as RepoPedidos
 	}
 
-	def crearSelectorEstado(Panel panel){
-//		new Selector<EstadoDePedido>(panel) => [
-//			allowNull(false)
-//			val propiedadEstados = bindItems(new ObservableProperty(repoEstados, "estados"))
-//			propiedadEstados.adaptWith(typeof(EstadoDePedido), "nombre")
-//			value <=> "appModelPedidos.pedidoSeleccionado.estado"
-//		]
-	}
-	
+
 	def crearPanelPlatos(Panel panel){
 		new Label(panel) => [
 			text = "Platos"
@@ -133,8 +114,8 @@ class EditarPedidoWindow extends TransactionalDialog<DominoAppModel> {
 
 		val tablaPlatos = new Table<Plato>(panel, typeof(Plato)) => [
 
-			items <=> "appModelPedidos.pedidoSeleccionado.platos"
-			value <=> "appModelPedidos.platoSeleccionado"
+			items <=> "pedidoSeleccionado.platos"
+			value <=> "platoSeleccionado"
 			
 			numberVisibleRows = 8
 		]
@@ -152,7 +133,7 @@ class EditarPedidoWindow extends TransactionalDialog<DominoAppModel> {
 				
 		
 		// Deshabilitar los botones si no hay ningún elemento seleccionado en la grilla.
-		val elementSelectedPlato = new NotNullObservable("appModelPedidos.platoSeleccionado")
+		val elementSelectedPlato = new NotNullObservable("platoSeleccionado")
 
 		new Button(actionsPanelPlato) => [
 			caption = "Editar"
@@ -162,7 +143,7 @@ class EditarPedidoWindow extends TransactionalDialog<DominoAppModel> {
 
 		new Button(actionsPanelPlato) => [
 			caption = "Eliminar"
-			onClick([|modelObject.appModelPedidos.eliminarPlatoSeleccionado])
+			onClick([|modelObject.eliminarPlatoSeleccionado])
 			bindEnabled(elementSelectedPlato)
 		]
 	}
@@ -176,7 +157,7 @@ class EditarPedidoWindow extends TransactionalDialog<DominoAppModel> {
 
 		new TextBox(panel) => [
 			height = 100
-			value <=> "appModelPedidos.pedidoSeleccionado.aclaracion"
+			value <=> "pedidoSeleccionado.aclaracion"
 		]
 	}
 	
@@ -189,7 +170,7 @@ class EditarPedidoWindow extends TransactionalDialog<DominoAppModel> {
 		]
 
 		new Label(panelDatos) => [
-			value <=> "appModelPedidos.pedidoSeleccionado.cliente.nombre"
+			value <=> "pedidoSeleccionado.cliente.nombre"
 		]
 
 		new Label(panelDatos) => [
@@ -198,7 +179,7 @@ class EditarPedidoWindow extends TransactionalDialog<DominoAppModel> {
 		]
 
 		new Label(panelDatos) => [
-			value <=> "appModelPedidos.pedidoSeleccionado.formaDeRetiro.costoEnvio"
+			value <=> "pedidoSeleccionado.formaDeRetiro.costoEnvio"
 		]
 
 		new Label(panelDatos) => [
@@ -207,7 +188,7 @@ class EditarPedidoWindow extends TransactionalDialog<DominoAppModel> {
 		]
 
 		new Label(panelDatos) => [
-			value <=> "appModelPedidos.pedidoSeleccionado.montoFinal"
+			value <=> "pedidoSeleccionado.montoFinal"
 		]
 
 		new Label(panelDatos) => [
@@ -216,7 +197,7 @@ class EditarPedidoWindow extends TransactionalDialog<DominoAppModel> {
 		]
 
 		new Label(panelDatos) => [
-			value <=> "appModelPedidos.pedidoSeleccionado.fecha"
+			value <=> "pedidoSeleccionado.fecha"
 		]
 	}
 }

@@ -11,9 +11,10 @@ import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.arena.windows.Dialog
-import ar.edu.unq.domino.appModel.DominoAppModel
+import ar.edu.unq.domino.appModel.PedidosAppModel
+import ar.edu.unq.domino.appModel.MenuAppModel
 
-abstract class PedidoWindow extends TransactionalDialog<DominoAppModel> {
+abstract class PedidoWindow extends TransactionalDialog<PedidosAppModel> {
 
 	public Panel panel1
 	public Panel panel2
@@ -27,7 +28,7 @@ abstract class PedidoWindow extends TransactionalDialog<DominoAppModel> {
 	public Button boton2
 
 	new(WindowOwner owner) {
-		super(owner, new DominoAppModel)
+		super(owner, new PedidosAppModel)
 		modelObject.search
 
 	}
@@ -60,7 +61,7 @@ abstract class PedidoWindow extends TransactionalDialog<DominoAppModel> {
 	}
 
 	def menuWindow() {
-		new MenuWindow(this, modelObject.appModelMenu).open
+		new MenuWindow(this, new MenuAppModel).open
 	}
 
 	def pedidosCerradosWindow() {

@@ -58,13 +58,14 @@ class EditarIngredienteWindow extends TransactionalDialog<Ingrediente> {
 
 
 
-	override executeTask() {
-		if (modelObject.isNew&& modelObject.validar) {
-			Menu.instance.agregarIngrediente(modelObject)
-		} else {
-			Menu.instance.modificarIngrediente(modelObject)
-		}
-		super.executeTask()
-	}
+//	override executeTask() {
+//		
+//		Menu.instance.agregarIngrediente(modelObject)
+//		} else {
+//		
+//			//Menu.instance.modificarIngrediente(modelObject)
+//		}
+//		super.executeTask()
+//	}
 
 }

@@ -9,6 +9,7 @@ import org.uqbar.arena.windows.WindowOwner
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
 import ar.edu.unq.domino.Pizzas.Pedido
 import org.uqbar.arena.bindings.NotNullObservable
+import ar.edu.unq.domino.appModel.EditarPedidoAppModel
 
 class PedidosAbiertosWindow extends PedidoWindow {
 
@@ -25,8 +26,8 @@ class PedidosAbiertosWindow extends PedidoWindow {
 		title = "Dominos Pizza"
 		label1.text = "Pedidos Abiertos"
 		label1.alignLeft
-		tabla1.items <=> "appModelPedidos.pedidosAbiertos"
-		tabla1.value <=> "appModelPedidos.pedidoSeleccionado"
+		tabla1.items <=> "pedidosAbiertos"
+		tabla1.value <=> "pedidoAbiertoSeleccionado"
 
 		columna1.bindContentsToProperty("numero")
 		columna2.bindContentsToProperty("estado")
@@ -39,23 +40,23 @@ class PedidosAbiertosWindow extends PedidoWindow {
 		panelHorizontal = new Panel(panelBotonesVerticales)
 		panelHorizontal.layout = new HorizontalLayout
 
-		val elementSelectedPedido = new NotNullObservable("appModelPedidos.pedidoSeleccionado")
+		val elementSelectedPedido = new NotNullObservable("pedidoAbiertoSeleccionado")
 
 		new Button(panelHorizontal) => [
 			caption = '<<<'
-			onClick[this.estadoAnterior(modelObject.appModelPedidos.pedidoSeleccionado)] //TODO: Mover la lógica de las pantallas al AppModel
+			onClick[this.estadoAnterior(modelObject.pedidoAbiertoSeleccionado)] //TODO: Mover la lógica de las pantallas al AppModel
 			bindEnabled(elementSelectedPedido)
 		]
 		new Button(panelHorizontal) => [
 			caption = '>>>'
-			onClick[this.estadoSiguiente(modelObject.appModelPedidos.pedidoSeleccionado)] //TODO: Mover la lógica de las pantallas al AppModel
+			onClick[this.estadoSiguiente(modelObject.pedidoAbiertoSeleccionado)] //TODO: Mover la lógica de las pantallas al AppModel
 			disableOnError
 			bindEnabled(elementSelectedPedido)
 		]
 		new Button(panelBotonesVerticales) => [
 			caption = 'Cancelar'
 			width = 75
-			onClick[modelObject.appModelPedidos.cancelarPedido]
+			onClick[modelObject.cancelarPedido]
 			bindEnabled(elementSelectedPedido)
 		]
 		new Button(panelBotonesVerticales) => [
@@ -78,7 +79,7 @@ class PedidosAbiertosWindow extends PedidoWindow {
 	}
 
 	def editarPedido() {
-		this.openDialog(new EditarPedidoWindow(this, modelObject))
+		this.openDialog(new EditarPedidoWindow(this, new EditarPedidoAppModel(modelObject.pedidoAbiertoSeleccionado)))
 	}
 
 	def estadoSiguiente(Pedido pedido) {

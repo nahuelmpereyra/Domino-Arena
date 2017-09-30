@@ -16,10 +16,7 @@ import ar.edu.unq.domino.formasDeEnvio.RetiroLocal
 import ar.edu.unq.domino.repo.RepoClientes
 import ar.edu.unq.domino.repo.RepoDistribuciones
 import ar.edu.unq.domino.repo.RepoEstados
-import ar.edu.unq.domino.repo.RepoIngredientes
 import ar.edu.unq.domino.repo.RepoPedidos
-import ar.edu.unq.domino.repo.RepoPlatos
-import ar.edu.unq.domino.repo.RepoPromociones
 import ar.edu.unq.domino.repo.RepoTamanios
 import ar.edu.unq.domino.sistema.Cliente
 import java.util.List
@@ -30,18 +27,15 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 
 	val List<Promocion> promosIniciales = newArrayList
 	val List<Ingrediente> ingredientesIniciales = newArrayList
+	Plato plato1
+	Plato plato2
 	
 	new() {
-		ApplicationContext.instance.configureSingleton(typeof(Ingrediente), new RepoIngredientes)
-		ApplicationContext.instance.configureSingleton(typeof(Promocion), new RepoPromociones)
 		ApplicationContext.instance.configureSingleton(typeof(Cliente), new RepoClientes)
 		ApplicationContext.instance.configureSingleton(typeof(Pedido), new RepoPedidos)
-		ApplicationContext.instance.configureSingleton(typeof(Plato), new RepoPlatos)
 		ApplicationContext.instance.configureSingleton(typeof(EstadoDePedido), new RepoEstados)
 		ApplicationContext.instance.configureSingleton(typeof(TamanioPromo), new RepoTamanios)
 		ApplicationContext.instance.configureSingleton(typeof(DistribucionPizza), new RepoDistribuciones)
-		
-
 	}
 
 	/**
@@ -53,7 +47,6 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 		val repoPedidos = ApplicationContext.instance.getSingleton(typeof(Pedido)) as RepoPedidos
 		val retiroLocal = new RetiroLocal
 		val retiroDelivery = new Delivery
-		val repoPlatos = ApplicationContext.instance.getSingleton(typeof(Plato)) as RepoPlatos
 		val tamanio = new Grande
 		val ingredientesExtra = new IngredientesExtras
 		val repoEstados = ApplicationContext.instance.getSingleton(typeof(EstadoDePedido)) as RepoEstados
@@ -75,10 +68,13 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 		]
 		
 		promosIniciales => [
-			add(new Promocion ("Jamón y morron", 150, new IngredientesExtras))
-			add(new Promocion ("Napolitana", 145, new IngredientesExtras))
-			add(new Promocion ("Huevo", 500, new IngredientesExtras))
+			add(new Promocion ("Jamón y morron", 150, ingredientesExtra))
+			add(new Promocion ("Napolitana", 145, ingredientesExtra))
+			add(new Promocion ("Huevo", 500, ingredientesExtra))
 		]
+		
+		plato1 = new Plato("Napolitana", promosIniciales.get(1), tamanio, ingredientesExtra)
+		plato2 = new Plato("Jamón y Morrón", promosIniciales.get(0), tamanio, ingredientesExtra)
 		
 		repoClientes => [
 			create("Esteban", "Esthebam", "root", "nahuelmpereyra@gmail.com", "Av falsa 123")
@@ -86,18 +82,13 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 
 		]
 		
-		repoPlatos => [
-			create("Napolitana", promosIniciales.get(0), tamanio, ingredientesExtra)
-			create("Huevo", promosIniciales.get(2), tamanio, ingredientesExtra)
-		]
-		
 		repoPedidos => [
 			create((repoClientes.search("Esthebam").get(0)), retiroDelivery, "Delivery")
 			create((repoClientes.search("Shamainco").get(0)), retiroDelivery, "Cliente nuevo")
 			create2((repoClientes.search("Shamainco").get(0)), retiroLocal, "")
-			buscarPedidosAbiertos.get(0).agregarPlato(repoPlatos.search("Napolitana").get(0))
-			buscarPedidosAbiertos.get(0).agregarPlato(repoPlatos.search("Huevo").get(0))
-			buscarPedidosAbiertos.get(1).agregarPlato(repoPlatos.search("Napolitana").get(0))
+			buscarPedidosAbiertos.get(0).agregarPlato(plato1)
+			buscarPedidosAbiertos.get(0).agregarPlato(plato2)
+			buscarPedidosAbiertos.get(1).agregarPlato(plato1)
 		]
 		
 		// 1 Pedido  -->   1 o varios Platos  -->  1 Promo

@@ -1,17 +1,17 @@
 package ar.edu.unq.domino.arena.ui
 
 import ar.edu.unq.domino.Pizzas.Ingrediente
+import ar.edu.unq.domino.Pizzas.Menu
 import org.uqbar.arena.aop.windows.TransactionalDialog
-import org.uqbar.arena.windows.WindowOwner
-import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.layout.ColumnLayout
-import org.uqbar.arena.widgets.Label
-import org.uqbar.arena.widgets.TextBox
-import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
-import org.uqbar.arena.widgets.NumericField
 import org.uqbar.arena.widgets.Button
-import ar.edu.unq.domino.repo.RepoIngredientes
-import org.uqbar.commons.applicationContext.ApplicationContext
+import org.uqbar.arena.widgets.Label
+import org.uqbar.arena.widgets.NumericField
+import org.uqbar.arena.widgets.Panel
+import org.uqbar.arena.widgets.TextBox
+import org.uqbar.arena.windows.WindowOwner
+
+import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
 
 class EditarIngredienteWindow extends TransactionalDialog<Ingrediente> {
 
@@ -56,15 +56,13 @@ class EditarIngredienteWindow extends TransactionalDialog<Ingrediente> {
 		]
 	}
 
-	def getRepoIngredientes() {
-		ApplicationContext.instance.getSingleton(typeof(Ingrediente)) as RepoIngredientes
-	}
+
 
 	override executeTask() {
-		if (modelObject.isNew) {
-			repoIngredientes.create(modelObject)
+		if (modelObject.isNew&& modelObject.validar) {
+			Menu.instance.agregarIngrediente(modelObject)
 		} else {
-			repoIngredientes.update(modelObject)
+			Menu.instance.modificarIngrediente(modelObject)
 		}
 		super.executeTask()
 	}

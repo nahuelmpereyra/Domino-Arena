@@ -43,13 +43,11 @@ class PedidosAbiertosWindow extends PedidoWindow {
 
 		new Button(panelHorizontal) => [
 			caption = '<<<'
-			bindEnabledToProperty("appModelPedidos.pedidoSeleccionado.estado.tienePrevio")
 			onClick[this.estadoAnterior(modelObject.appModelPedidos.pedidoSeleccionado)] //TODO: Mover la lógica de las pantallas al AppModel
 			bindEnabled(elementSelectedPedido)
 		]
 		new Button(panelHorizontal) => [
 			caption = '>>>'
-			bindEnabledToProperty("appModelPedidos.pedidoSeleccionado.estado.tieneSiguiente")
 			onClick[this.estadoSiguiente(modelObject.appModelPedidos.pedidoSeleccionado)] //TODO: Mover la lógica de las pantallas al AppModel
 			disableOnError
 			bindEnabled(elementSelectedPedido)

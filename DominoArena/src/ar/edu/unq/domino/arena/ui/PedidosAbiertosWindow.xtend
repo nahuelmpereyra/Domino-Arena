@@ -1,5 +1,7 @@
 package ar.edu.unq.domino.arena.ui
 
+import ar.edu.unq.domino.appModel.EditarPedidoAppModel
+import org.uqbar.arena.bindings.NotNullObservable
 import org.uqbar.arena.layout.HorizontalLayout
 import org.uqbar.arena.layout.VerticalLayout
 import org.uqbar.arena.widgets.Button
@@ -7,9 +9,7 @@ import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.windows.WindowOwner
 
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
-import ar.edu.unq.domino.Pizzas.Pedido
-import org.uqbar.arena.bindings.NotNullObservable
-import ar.edu.unq.domino.appModel.EditarPedidoAppModel
+import java.time.LocalDateTime
 
 class PedidosAbiertosWindow extends PedidoWindow {
 
@@ -32,8 +32,18 @@ class PedidosAbiertosWindow extends PedidoWindow {
 		columna1.bindContentsToProperty("numero")
 		columna2.bindContentsToProperty("estado")
 		columna3.bindContentsToProperty("montoFinal")
-		columna4.bindContentsToProperty("fecha")
+		columna4.bindContentsToProperty("fecha").transformer = [ LocalDateTime f |
+				val dias = f.dayOfMonth
+				val meses = f.monthValue
+				val anios = f.year
+				val hora = f.hour
+				val min = f.minute
+				val seg = f.second
+				val res = dias.toString + "/" + meses.toString + "/" + anios.toString + " " + hora.toString + ":" + min.toString + ":" + seg.toString
+				res
+			]
 		columna4.fixedSize = 150
+		
 
 		panelBotonesVerticales = new Panel(mainPanel)
 		panelBotonesVerticales.layout = new VerticalLayout
@@ -44,13 +54,12 @@ class PedidosAbiertosWindow extends PedidoWindow {
 
 		new Button(panelHorizontal) => [
 			caption = '<<<'
-			onClick[this.estadoAnterior(modelObject.pedidoAbiertoSeleccionado)] //TODO: Mover la lógica de las pantallas al AppModel
+			onClick[modelObject.pasarEstadoAnterior(modelObject.pedidoAbiertoSeleccionado)]
 			bindEnabled(elementSelectedPedido)
 		]
 		new Button(panelHorizontal) => [
 			caption = '>>>'
-			onClick[this.estadoSiguiente(modelObject.pedidoAbiertoSeleccionado)] //TODO: Mover la lógica de las pantallas al AppModel
-			disableOnError
+			onClick[modelObject.pasarEstadoSiguiente(modelObject.pedidoAbiertoSeleccionado)]
 			bindEnabled(elementSelectedPedido)
 		]
 		new Button(panelBotonesVerticales) => [
@@ -80,14 +89,6 @@ class PedidosAbiertosWindow extends PedidoWindow {
 
 	def editarPedido() {
 		this.openDialog(new EditarPedidoWindow(this, new EditarPedidoAppModel(modelObject.pedidoAbiertoSeleccionado)))
-	}
-
-	def estadoSiguiente(Pedido pedido) {
-		pedido.estado.siguiente(pedido) //TODO: Lógica del dominio
-	}
-
-	def estadoAnterior(Pedido pedido) {
-		pedido.estado.anterior(pedido) //TODO: Lógica del dominio
 	}
 
 }

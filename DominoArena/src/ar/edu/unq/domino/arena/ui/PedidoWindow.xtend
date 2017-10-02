@@ -94,7 +94,7 @@ abstract class PedidoWindow extends TransactionalDialog<PedidosAppModel> {
 		columna3.title = "Monto"
 		columna3.fixedSize = 100
 
-		columna4.title = "Hora"
+		columna4.title = "Fecha y hora"
 		columna4.fixedSize = 100
 
 	}

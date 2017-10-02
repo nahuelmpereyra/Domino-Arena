@@ -1,11 +1,12 @@
 package ar.edu.unq.domino.arena.ui
 
+import ar.edu.unq.domino.appModel.EditarPedidoAppModel
+import java.time.LocalDateTime
+import org.uqbar.arena.bindings.NotNullObservable
 import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.windows.WindowOwner
 
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
-import org.uqbar.arena.bindings.NotNullObservable
-import ar.edu.unq.domino.appModel.EditarPedidoAppModel
 
 class PedidosCerradosWindow extends PedidoWindow {
 
@@ -22,14 +23,25 @@ class PedidosCerradosWindow extends PedidoWindow {
 		tabla1.items <=> "pedidosCerrados"
 		tabla1.value <=> "pedidoCerradoSeleccionado"
 
-		columna3.title = "Fecha"
+		columna3.title = "Fecha y hora"
 		columna3.fixedSize = 150
 		columna4.title = "Tiempo de espera"
 		columna4.fixedSize = 150
 		columna1.bindContentsToProperty("numero")
 		columna2.bindContentsToProperty("estado")
-		columna3.bindContentsToProperty("fecha")
-		columna4.bindContentsToProperty("tiempoEspera")
+		columna3.bindContentsToProperty("fecha").transformer = [ LocalDateTime f |
+				val dias = f.dayOfMonth
+				val meses = f.monthValue
+				val anios = f.year
+				val hora = f.hour
+				val min = f.minute
+				val seg = f.second
+				val res = dias.toString + "/" + meses.toString + "/" + anios.toString + " " + hora.toString + ":" + min.toString + ":" + seg.toString
+				res
+			]
+		columna4.bindContentsToProperty("tiempoEspera").transformer = [ long t |
+				t.toString + " minutos"
+			]
 
 		boton1.caption = "Volver"
 		boton1.onClick[close]

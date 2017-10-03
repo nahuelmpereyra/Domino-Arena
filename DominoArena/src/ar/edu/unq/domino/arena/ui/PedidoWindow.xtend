@@ -14,7 +14,7 @@ import org.uqbar.arena.windows.Dialog
 import ar.edu.unq.domino.appModel.PedidosAppModel
 import ar.edu.unq.domino.appModel.MenuAppModel
 
-abstract class PedidoWindow extends TransactionalDialog<PedidosAppModel> {
+abstract class PedidoWindow extends Dialog<PedidosAppModel> {
 
 	public Panel panel1
 	public Panel panel2

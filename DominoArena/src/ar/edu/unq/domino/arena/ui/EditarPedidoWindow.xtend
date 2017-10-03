@@ -85,7 +85,7 @@ class EditarPedidoWindow extends TransactionalDialog<EditarPedidoAppModel> {
 	// ** Acciones
 	// ********************************************************	
 	def agregarPlato() {
-//		this.openDialog(new CrearPlatoWindow(this, modelObject.pedidoSeleccionado))
+		this.openDialog(new CrearPlatoWindow(this, modelObject.pedidoSeleccionado))
 	}
 	
 	def void modificarPlato() {

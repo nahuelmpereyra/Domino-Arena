@@ -1,21 +1,20 @@
 package ar.edu.unq.domino.arena.ui
 
 import org.uqbar.arena.windows.WindowOwner
-/*
- * 
- * Hay que crear un PlatoAppModel.
- * 
+import ar.edu.unq.domino.appModel.PlatoAppModel
+import ar.edu.unq.domino.Pizzas.Plato
+import ar.edu.unq.domino.Pizzas.Pedido
+
 class CrearPlatoWindow extends EditarPlatoWindow {
 
-	new(WindowOwner parent, DominoAppModel model) {
-		super(parent, model)
+	new(WindowOwner parent, Pedido pedido) {
+//		super(parent, new Plato, pedido)
 
 	}
 
 	override def defaultTitle() {
 
-		"Agregar plato"
+		"Agregar nuevo plato"
 	}
 
 }
-*/

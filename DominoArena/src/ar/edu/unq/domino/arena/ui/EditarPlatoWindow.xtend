@@ -4,8 +4,7 @@ import ar.edu.unq.domino.Pizzas.Menu
 import ar.edu.unq.domino.Pizzas.Promocion
 import ar.edu.unq.domino.TamanioPizzas.TamanioPromo
 import ar.edu.unq.domino.distribuciones.DistribucionPizza
-import ar.edu.unq.domino.repo.RepoDistribuciones
-import ar.edu.unq.domino.repo.RepoTamanios
+import ar.edu.unq.domino.appModel.PlatoAppModel
 import org.uqbar.arena.aop.windows.TransactionalDialog
 import org.uqbar.arena.bindings.ObservableProperty
 import org.uqbar.arena.layout.ColumnLayout
@@ -18,16 +17,15 @@ import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.commons.applicationContext.ApplicationContext
 
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
+import ar.edu.unq.domino.Pizzas.Plato
 import ar.edu.unq.domino.Pizzas.Pedido
-import ar.edu.unq.domino.repo.RepoPedidos
-/*
- * 
- * Hay que crear un PlatoAppModel.
- * 
-class EditarPlatoWindow extends TransactionalDialog<DominoAppModel> {
+import ar.edu.unq.domino.repo.RepoTamanios
+import ar.edu.unq.domino.repo.RepoDistribuciones
 
-	new(WindowOwner owner, DominoAppModel model) {
-		super(owner, model)
+class EditarPlatoWindow extends TransactionalDialog<PlatoAppModel> {
+
+	new(WindowOwner owner, PlatoAppModel model) {
+		super(owner, model) 
 		title = defaultTitle
 	}
 
@@ -36,7 +34,6 @@ class EditarPlatoWindow extends TransactionalDialog<DominoAppModel> {
 	}
 
 	override protected createFormPanel(Panel mainPanel) {	
-
 		this.mostrarPromo(mainPanel)
 		this.mostrarTamanio(mainPanel)
 		this.mostrarIngredientes(mainPanel)
@@ -51,9 +48,10 @@ class EditarPlatoWindow extends TransactionalDialog<DominoAppModel> {
 			fontSize = 10
 		]
 
-		new Selector<Promocion>(form) => [
+		new Selector<Plato>(form) => [
 			allowNull(false)
-			value <=> "appModelMenu.promoSeleccionada"
+			value <=> "platoSeleccionado"
+			items <=>"repoPlato.objects"
 			// Ver binding en función del appModel que se utilice.
 			
 			// val propiedadPromociones = bindItems(new ObservableProperty(repoPromo, "promociones"))
@@ -71,8 +69,10 @@ class EditarPlatoWindow extends TransactionalDialog<DominoAppModel> {
 
 		new Selector<TamanioPromo>(form) => [
 			allowNull(false)
-			value <=> "appModelTamanios.tamanioSeleccionado"
-			val propiedadTamanio = bindItems(new ObservableProperty(repoTamanios, "tamanios"))
+			value <=> "platoSeleccionado.tamanio"
+			items <=> "nombre"
+			
+			val propiedadTamanio = bindItems(new ObservableProperty(RepoTamanios, "tamanios"))
 			propiedadTamanio.adaptWith(typeof(TamanioPromo), "nombre")
 		]
 	}
@@ -98,7 +98,7 @@ class EditarPlatoWindow extends TransactionalDialog<DominoAppModel> {
 			]
 			new Selector<DistribucionPizza>(formIng) => [
 				allowNull(false)
-				val propiedadDistribuciones = bindItems(new ObservableProperty(repoDistribuciones, "distribuciones"))
+				val propiedadDistribuciones = bindItems(new ObservableProperty(RepoDistribuciones, "distribuciones"))
 				propiedadDistribuciones.adaptWith(typeof(DistribucionPizza), "nombre")
 			]
 		}
@@ -114,7 +114,7 @@ class EditarPlatoWindow extends TransactionalDialog<DominoAppModel> {
 		]
 		
 		new Label(form) => [
-			value <=> "appModelPedidos.platoSeleccionado.precio"
+			value <=> "plato.getPrecio()"
 			alignCenter
 			fontSize = 11
 		]
@@ -133,31 +133,10 @@ class EditarPlatoWindow extends TransactionalDialog<DominoAppModel> {
 			onClick [|this.cancel]
 		]
 	}
-
-
 	
-	
-	
-	
-	
-	// ********************************************************
-	// ** Acciones
-	// ********************************************************	
-
-	def getRepoTamanios() {
-		ApplicationContext.instance.getSingleton(typeof(TamanioPromo)) as RepoTamanios
-	}
-	
-	def getRepoDistribuciones() {
-		ApplicationContext.instance.getSingleton(typeof(DistribucionPizza)) as RepoDistribuciones
-	}
-	
-	def getRepoPedidos() {
-		ApplicationContext.instance.getSingleton(typeof(Pedido)) as RepoPedidos
-	}
-
-
+	//override executeTask() {
+		//modelObject.pedido.agregarPlato(modelObject.platoSeleccionado)
+		//super.executeTask()
+	//}
 }
 
-* /
-*/

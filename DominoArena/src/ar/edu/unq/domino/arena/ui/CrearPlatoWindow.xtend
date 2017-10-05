@@ -7,8 +7,8 @@ import ar.edu.unq.domino.Pizzas.Pedido
 
 class CrearPlatoWindow extends EditarPlatoWindow {
 
-	new(WindowOwner parent, Pedido pedido) {
-//		super(parent, new Plato, pedido)
+	new(WindowOwner parent,Pedido pedido) {
+		super(parent, new Plato, pedido)
 
 	}
 

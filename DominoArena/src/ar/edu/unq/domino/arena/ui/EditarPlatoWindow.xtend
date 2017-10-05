@@ -24,8 +24,8 @@ import ar.edu.unq.domino.repo.RepoDistribuciones
 
 class EditarPlatoWindow extends TransactionalDialog<PlatoAppModel> {
 
-	new(WindowOwner owner, PlatoAppModel model) {
-		super(owner, model) 
+	new(WindowOwner owner, Plato plato, Pedido pedido) {
+		super(owner, new PlatoAppModel(plato,pedido)) 
 		title = defaultTitle
 	}
 

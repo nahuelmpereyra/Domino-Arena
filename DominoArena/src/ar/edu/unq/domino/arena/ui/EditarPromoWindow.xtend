@@ -1,7 +1,7 @@
 package ar.edu.unq.domino.arena.ui
 
-import ar.edu.unq.domino.Pizzas.Menu
 import ar.edu.unq.domino.Pizzas.Promocion
+import ar.edu.unq.domino.repo.RepoPromociones
 import org.uqbar.arena.aop.windows.TransactionalDialog
 import org.uqbar.arena.layout.ColumnLayout
 import org.uqbar.arena.widgets.Button
@@ -10,6 +10,7 @@ import org.uqbar.arena.widgets.NumericField
 import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.widgets.TextBox
 import org.uqbar.arena.windows.WindowOwner
+import org.uqbar.commons.applicationContext.ApplicationContext
 
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
 
@@ -55,16 +56,12 @@ class EditarPromoWindow extends TransactionalDialog<Promocion> {
 			onClick [|this.cancel]
 		]
 	}
-
-
-
-	override executeTask() {
-		if (modelObject.isNew && modelObject.validar) {
-			Menu.instance.agregarPromo(modelObject)
-		} else {
-			Menu.instance.modificarPromo(modelObject)
-		}
-		super.executeTask()
+	def getRepoPromociones() {
+		ApplicationContext.instance.getSingleton(typeof(Promocion)) as RepoPromociones
 	}
 
+	override executeTask() {
+		repoPromociones.update(modelObject)
+		super.executeTask()
+	}
 }

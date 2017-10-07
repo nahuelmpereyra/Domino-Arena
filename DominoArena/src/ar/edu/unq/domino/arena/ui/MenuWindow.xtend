@@ -57,6 +57,7 @@ class MenuWindow extends SimpleWindow<MenuAppModel> {
 		new Button(actionsPanelPromocion) => [
 			caption = "Crear"
 			onClick([|this.crearPromo])
+			modelObject.searchPromocion
 		]
 
 		// Deshabilitar los botones si no hay ningún elemento seleccionado en la grilla.
@@ -66,6 +67,7 @@ class MenuWindow extends SimpleWindow<MenuAppModel> {
 			caption = "Editar"
 			onClick([|this.modificarPromo])
 			bindEnabled(elementSelectedPromo)
+			modelObject.searchIngrediente
 		]
 
 		new Button(actionsPanelPromocion) => [
@@ -93,6 +95,7 @@ class MenuWindow extends SimpleWindow<MenuAppModel> {
 		new Button(actionsPanelIngrediente) => [
 			caption = "Crear"
 			onClick([|this.crearIngrediente])
+			modelObject.searchIngrediente
 		]
 
 		// Deshabilitar los botones si no hay ningún elemento seleccionado en la grilla.

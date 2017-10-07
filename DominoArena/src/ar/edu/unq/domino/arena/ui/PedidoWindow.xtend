@@ -1,7 +1,8 @@
 package ar.edu.unq.domino.arena.ui
 
 import ar.edu.unq.domino.Pizzas.Pedido
-import org.uqbar.arena.aop.windows.TransactionalDialog
+import ar.edu.unq.domino.appModel.MenuAppModel
+import ar.edu.unq.domino.appModel.PedidosAppModel
 import org.uqbar.arena.layout.HorizontalLayout
 import org.uqbar.arena.layout.VerticalLayout
 import org.uqbar.arena.widgets.Button
@@ -9,10 +10,8 @@ import org.uqbar.arena.widgets.Label
 import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.tables.Table
-import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.arena.windows.Dialog
-import ar.edu.unq.domino.appModel.PedidosAppModel
-import ar.edu.unq.domino.appModel.MenuAppModel
+import org.uqbar.arena.windows.WindowOwner
 
 abstract class PedidoWindow extends Dialog<PedidosAppModel> {
 
@@ -59,7 +58,6 @@ abstract class PedidoWindow extends Dialog<PedidosAppModel> {
 		boton2.width = 100
 
 	}
-
 	def menuWindow() {
 		new MenuWindow(this, new MenuAppModel).open
 	}
@@ -76,7 +74,6 @@ abstract class PedidoWindow extends Dialog<PedidosAppModel> {
 	def pedidosAbiertosWindow() {
 		this.openDialog(new PedidosAbiertosWindow(this))
 	}
-
 
 
 	def crearTablaPedidosAbiertos(Table<Pedido> tabla1) {

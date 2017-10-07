@@ -1,8 +1,7 @@
 package ar.edu.unq.domino.arena.ui
 
-import org.uqbar.arena.windows.WindowOwner
-
 import ar.edu.unq.domino.Pizzas.Promocion
+import org.uqbar.arena.windows.WindowOwner
 
 class CrearPromoWindow extends EditarPromoWindow {
 
@@ -14,6 +13,10 @@ class CrearPromoWindow extends EditarPromoWindow {
 	override defaultTitle() {
 
 		"Crear Promoción"
+	}
+	override executeTask() {
+		repoPromociones.create(modelObject)
+		super.executeTask()
 	}
 
 }

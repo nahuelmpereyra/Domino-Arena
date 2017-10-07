@@ -1,7 +1,7 @@
 package ar.edu.unq.domino.arena.ui
 
 import ar.edu.unq.domino.Pizzas.Ingrediente
-import ar.edu.unq.domino.Pizzas.Menu
+import ar.edu.unq.domino.repo.RepoIngredientes
 import org.uqbar.arena.aop.windows.TransactionalDialog
 import org.uqbar.arena.layout.ColumnLayout
 import org.uqbar.arena.widgets.Button
@@ -10,6 +10,7 @@ import org.uqbar.arena.widgets.NumericField
 import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.widgets.TextBox
 import org.uqbar.arena.windows.WindowOwner
+import org.uqbar.commons.applicationContext.ApplicationContext
 
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
 
@@ -56,16 +57,13 @@ class EditarIngredienteWindow extends TransactionalDialog<Ingrediente> {
 		]
 	}
 
+	def getRepoIngredientes() {
+		ApplicationContext.instance.getSingleton(typeof(Ingrediente)) as RepoIngredientes
+	}
 
-
-//	override executeTask() {
-//		
-//		Menu.instance.agregarIngrediente(modelObject)
-//		} else {
-//		
-//			//Menu.instance.modificarIngrediente(modelObject)
-//		}
-//		super.executeTask()
-//	}
-
+	override executeTask() {
+		repoIngredientes.update(modelObject)
+		
+		super.executeTask()
+	}
 }

@@ -14,5 +14,10 @@ class CrearIngredienteWindow extends EditarIngredienteWindow {
 
 		"Crear Ingrediente"
 	}
+	
+	override executeTask() {
+		repoIngredientes.create(modelObject)
+		super.executeTask()
+	}
 
 }

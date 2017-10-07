@@ -16,7 +16,9 @@ import ar.edu.unq.domino.formasDeEnvio.RetiroLocal
 import ar.edu.unq.domino.repo.RepoClientes
 import ar.edu.unq.domino.repo.RepoDistribuciones
 import ar.edu.unq.domino.repo.RepoEstados
+import ar.edu.unq.domino.repo.RepoIngredientes
 import ar.edu.unq.domino.repo.RepoPedidos
+import ar.edu.unq.domino.repo.RepoPromociones
 import ar.edu.unq.domino.repo.RepoTamanios
 import ar.edu.unq.domino.sistema.Cliente
 import java.util.List
@@ -29,9 +31,11 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 	val List<Ingrediente> ingredientesIniciales = newArrayList
 	Plato plato1
 	Plato plato2
-	
+
 	new() {
+		ApplicationContext.instance.configureSingleton(typeof(Ingrediente), new RepoIngredientes)
 		ApplicationContext.instance.configureSingleton(typeof(Cliente), new RepoClientes)
+		ApplicationContext.instance.configureSingleton(typeof(Promocion), new RepoPromociones)
 		ApplicationContext.instance.configureSingleton(typeof(Pedido), new RepoPedidos)
 		ApplicationContext.instance.configureSingleton(typeof(EstadoDePedido), new RepoEstados)
 		ApplicationContext.instance.configureSingleton(typeof(TamanioPromo), new RepoTamanios)
@@ -43,6 +47,8 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 	 * 
 	 */
 	override run() {
+		val repoIngredientes = ApplicationContext.instance.getSingleton(typeof(Ingrediente)) as RepoIngredientes
+		val repoPromociones = ApplicationContext.instance.getSingleton(typeof(Promocion)) as RepoPromociones
 		val repoClientes = ApplicationContext.instance.getSingleton(typeof(Cliente)) as RepoClientes
 		val repoPedidos = ApplicationContext.instance.getSingleton(typeof(Pedido)) as RepoPedidos
 		val retiroLocal = new RetiroLocal
@@ -51,37 +57,34 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 		val ingredientesExtra = new IngredientesExtras
 		val repoEstados = ApplicationContext.instance.getSingleton(typeof(EstadoDePedido)) as RepoEstados
 		val repoTamanios = ApplicationContext.instance.getSingleton(typeof(TamanioPromo)) as RepoTamanios
-		val repoDistribuciones = ApplicationContext.instance.getSingleton(typeof(DistribucionPizza)) as RepoDistribuciones
+		val repoDistribuciones = ApplicationContext.instance.getSingleton(
+			typeof(DistribucionPizza)) as RepoDistribuciones
 		val menu = Menu.config(new Menu)
 		GMailSender.config(new GMailSender("pruebasfacultadtpi@gmail.com", "unqui2017"))
-		menu => [
-			promociones = promosIniciales
-			ingredientes = ingredientesIniciales
-		]
-		
 
-		ingredientesIniciales => [
-			add(new Ingrediente ("Jamón", 15))
-			add(new Ingrediente("Ananá", 5))
-			add(new Ingrediente ("Morrones", 5))
-			add(new Ingrediente ("Queso", 5))
+		repoIngredientes => [
+			create("Jamón", 15)
+			create("Ananá", 5)
+			create("Morrones", 10)
+			create("Queso", 20)
+
 		]
-		
-		promosIniciales => [
-			add(new Promocion ("Jamón y morron", 150, ingredientesExtra))
-			add(new Promocion ("Napolitana", 145, ingredientesExtra))
-			add(new Promocion ("Huevo", 500, ingredientesExtra))
+
+		repoPromociones => [
+			create("Jamón y morron", 150)
+			create("Napolitana", 145)
+			create("Huevo", 500)
 		]
-		
-		plato1 = new Plato("Napolitana", promosIniciales.get(1), tamanio, ingredientesExtra)
-		plato2 = new Plato("Jamón y Morrón", promosIniciales.get(0), tamanio, ingredientesExtra)
-		
+
+		plato1 = new Plato("Napolitana", repoPromociones.search("Napolitana").get(0), tamanio, ingredientesExtra)
+		plato2 = new Plato("Jamón y Morrón",  repoPromociones.search("Huevo").get(0), tamanio, ingredientesExtra)
+
 		repoClientes => [
 			create("Esteban", "Esthebam", "root", "nahuelmpereyra@gmail.com", "Av falsa 123")
 			create("Ramiro", "Shamainco", "root", "nahuelmpereyra@gmail.com", "Av falsa 1234")
 
 		]
-		
+
 		repoPedidos => [
 			create((repoClientes.search("Esthebam").get(0)), retiroDelivery, "Delivery")
 			create((repoClientes.search("Shamainco").get(0)), retiroDelivery, "Cliente nuevo")
@@ -90,9 +93,8 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 			buscarPedidosAbiertos.get(0).agregarPlato(plato2)
 			buscarPedidosAbiertos.get(1).agregarPlato(plato1)
 		]
-		
-		// 1 Pedido  -->   1 o varios Platos  -->  1 Promo
 
+		// 1 Pedido  -->   1 o varios Platos  -->  1 Promo
 		repoEstados => [
 			createCancelado
 			createEntregado
@@ -107,7 +109,7 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 			createGrande
 			createPorcion
 		]
-		
+
 		repoDistribuciones => [
 			createToda
 			createMitadIzquierda

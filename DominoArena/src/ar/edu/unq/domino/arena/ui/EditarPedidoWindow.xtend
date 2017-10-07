@@ -192,12 +192,25 @@ class EditarPedidoWindow extends TransactionalDialog<EditarPedidoAppModel> {
 		]
 
 		new Label(panelDatos) => [
-			text = "Fecha"
+			text = "Fecha de inicio"
 			alignLeft
 		]
 
 		new Label(panelDatos) => [
-			value <=> "pedidoSeleccionado.fecha"
+			value <=> "fechaInicioTransformada"
+		]
+		
+		new Label(panelDatos) => [
+			text = "Fecha de finalización"
+			alignLeft
+		]
+		
+		new Label(panelDatos) => [
+			value <=> "fechaFinTransformada"
 		]
 	}
 }
+
+
+
+

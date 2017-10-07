@@ -4,7 +4,6 @@ import ar.edu.unq.domino.EstadosDePedido.EstadoDePedido
 import ar.edu.unq.domino.Mailing.GMailSender
 import ar.edu.unq.domino.Pizzas.Ingrediente
 import ar.edu.unq.domino.Pizzas.IngredientesExtras
-import ar.edu.unq.domino.Pizzas.Menu
 import ar.edu.unq.domino.Pizzas.Pedido
 import ar.edu.unq.domino.Pizzas.Plato
 import ar.edu.unq.domino.Pizzas.Promocion
@@ -21,14 +20,12 @@ import ar.edu.unq.domino.repo.RepoPedidos
 import ar.edu.unq.domino.repo.RepoPromociones
 import ar.edu.unq.domino.repo.RepoTamanios
 import ar.edu.unq.domino.sistema.Cliente
-import java.util.List
 import org.uqbar.arena.bootstrap.CollectionBasedBootstrap
 import org.uqbar.commons.applicationContext.ApplicationContext
 
 class DominoBootstrap extends CollectionBasedBootstrap {
 
-	val List<Promocion> promosIniciales = newArrayList
-	val List<Ingrediente> ingredientesIniciales = newArrayList
+
 	Plato plato1
 	Plato plato2
 
@@ -59,7 +56,7 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 		val repoTamanios = ApplicationContext.instance.getSingleton(typeof(TamanioPromo)) as RepoTamanios
 		val repoDistribuciones = ApplicationContext.instance.getSingleton(
 			typeof(DistribucionPizza)) as RepoDistribuciones
-		val menu = Menu.config(new Menu)
+
 		GMailSender.config(new GMailSender("pruebasfacultadtpi@gmail.com", "unqui2017"))
 
 		repoIngredientes => [

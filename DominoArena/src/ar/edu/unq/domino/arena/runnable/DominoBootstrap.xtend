@@ -49,7 +49,7 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 		val repoClientes = ApplicationContext.instance.getSingleton(typeof(Cliente)) as RepoClientes
 		val repoPedidos = ApplicationContext.instance.getSingleton(typeof(Pedido)) as RepoPedidos
 		val retiroLocal = new RetiroLocal
-		val retiroDelivery = new Delivery
+		val retiroDelivery = new Delivery("Calle falsa 123")
 		val tamanio = new Grande
 		val ingredientesExtra = new IngredientesExtras
 		val repoEstados = ApplicationContext.instance.getSingleton(typeof(EstadoDePedido)) as RepoEstados
@@ -77,15 +77,15 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 		plato2 = new Plato("Jamón y Morrón",  repoPromociones.search("Huevo").get(0), tamanio, ingredientesExtra)
 
 		repoClientes => [
-			create("Esteban", "Esthebam", "root", "nahuelmpereyra@gmail.com", "Av falsa 123")
-			create("Ramiro", "Shamainco", "root", "nahuelmpereyra@gmail.com", "Av falsa 1234")
+			create("Esteban", "Esthebam", "root", "estebanmatas13@gmail.com", "Av falsa 123")
+			create("Nahuel", "nahu", "root", "nahuelmpereyra@gmail.com", "Av falsa 1234")
 
 		]
 
 		repoPedidos => [
 			create((repoClientes.search("Esthebam").get(0)), retiroDelivery, "Delivery")
-			create((repoClientes.search("Shamainco").get(0)), retiroDelivery, "Cliente nuevo")
-			create2((repoClientes.search("Shamainco").get(0)), retiroLocal, "")
+			create((repoClientes.search("nahu").get(0)), retiroDelivery, "Cliente nuevo")
+			create2((repoClientes.search("nahu").get(0)), retiroLocal, "")
 			buscarPedidosAbiertos.get(0).agregarPlato(plato1)
 			buscarPedidosAbiertos.get(0).agregarPlato(plato2)
 			buscarPedidosAbiertos.get(1).agregarPlato(plato1)

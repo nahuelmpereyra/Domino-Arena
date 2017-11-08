@@ -10,6 +10,7 @@ import ar.edu.unq.domino.Pizzas.Promocion
 import ar.edu.unq.domino.TamanioPizzas.Grande
 import ar.edu.unq.domino.TamanioPizzas.TamanioPromo
 import ar.edu.unq.domino.distribuciones.DistribucionPizza
+import ar.edu.unq.domino.distribuciones.Toda
 import ar.edu.unq.domino.formasDeEnvio.Delivery
 import ar.edu.unq.domino.formasDeEnvio.RetiroLocal
 import ar.edu.unq.domino.repo.RepoClientes
@@ -52,25 +53,35 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 		val retiroDelivery = new Delivery("Calle falsa 123")
 		val tamanio = new Grande
 		val ingredientesExtra = new IngredientesExtras
+		val ingredientesJamonYMorron = new IngredientesExtras
+		val ingredientesNapolitana = new IngredientesExtras
+		val ingredientesHuevo = new IngredientesExtras
 		val repoEstados = ApplicationContext.instance.getSingleton(typeof(EstadoDePedido)) as RepoEstados
 		val repoTamanios = ApplicationContext.instance.getSingleton(typeof(TamanioPromo)) as RepoTamanios
-		val repoDistribuciones = ApplicationContext.instance.getSingleton(
-			typeof(DistribucionPizza)) as RepoDistribuciones
+		val repoDistribuciones = ApplicationContext.instance.getSingleton(typeof(DistribucionPizza)) as RepoDistribuciones
 
 		GMailSender.config(new GMailSender("pruebasfacultadtpi@gmail.com", "unqui2017"))
-
+		
+		
 		repoIngredientes => [
 			create("Jamón", 15)
 			create("Ananá", 5)
+			create("Tomate", 5)
 			create("Morrones", 10)
 			create("Queso", 20)
-
+			create("Huevo", 20)
 		]
-
+		
+		ingredientesJamonYMorron.agregarIngrediente(repoIngredientes.searchByName("Jamón"), new Toda())
+		ingredientesJamonYMorron.agregarIngrediente(repoIngredientes.searchByName("Morrones"), new Toda())
+		ingredientesNapolitana.agregarIngrediente(repoIngredientes.searchByName("Tomate"), new Toda())
+		ingredientesHuevo.agregarIngrediente(repoIngredientes.searchByName("Huevo"), new Toda())
+		
+		
 		repoPromociones => [
-			create("Jamón y morron", 150)
-			create("Napolitana", 145)
-			create("Huevo", 500)
+			create("Jamón y morron", 150, ingredientesJamonYMorron )
+			create("Napolitana", 145, ingredientesNapolitana)
+			create("Huevo", 120, ingredientesHuevo)
 		]
 
 		plato1 = new Plato("Napolitana", repoPromociones.search("Napolitana").get(0), tamanio, ingredientesExtra)
@@ -78,14 +89,14 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 
 		repoClientes => [
 			create("Esteban", "Esthebam", "root", "estebanmatas13@gmail.com", "Av falsa 123")
-			create("Nahuel", "nahu", "root", "nahuelmpereyra@gmail.com", "Av falsa 1234")
+			create("Nahuel", "Nahuel", "root", "nahuelmpereyra@gmail.com", "Av falsa 1234")
 
 		]
 
 		repoPedidos => [
 			create((repoClientes.search("Esthebam").get(0)), retiroDelivery, "Delivery")
-			create((repoClientes.search("nahu").get(0)), retiroDelivery, "Cliente nuevo")
-			create2((repoClientes.search("nahu").get(0)), retiroLocal, "")
+			create((repoClientes.search("Nahuel").get(0)), retiroDelivery, "Cliente nuevo")
+			create2((repoClientes.search("Nahuel").get(0)), retiroLocal, "")
 			buscarPedidosAbiertos.get(0).agregarPlato(plato1)
 			buscarPedidosAbiertos.get(0).agregarPlato(plato2)
 			buscarPedidosAbiertos.get(1).agregarPlato(plato1)
@@ -112,6 +123,7 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 			createMitadIzquierda
 			createMitadDerecha
 		]
+		repoPromociones.allInstances.get(0).ingredientesBase.agregarIngrediente(repoIngredientes.search("Jamón").get(0), repoDistribuciones.allInstances.get(0)) 
 
 	}
 

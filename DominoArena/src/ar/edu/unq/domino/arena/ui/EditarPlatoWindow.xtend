@@ -1,10 +1,12 @@
 package ar.edu.unq.domino.arena.ui
 
-import ar.edu.unq.domino.Pizzas.Menu
-import ar.edu.unq.domino.Pizzas.Promocion
+import ar.edu.unq.domino.Pizzas.Pedido
+import ar.edu.unq.domino.Pizzas.Plato
 import ar.edu.unq.domino.TamanioPizzas.TamanioPromo
-import ar.edu.unq.domino.distribuciones.DistribucionPizza
 import ar.edu.unq.domino.appModel.PlatoAppModel
+import ar.edu.unq.domino.distribuciones.DistribucionPizza
+import ar.edu.unq.domino.repo.RepoDistribuciones
+import ar.edu.unq.domino.repo.RepoTamanios
 import org.uqbar.arena.aop.windows.TransactionalDialog
 import org.uqbar.arena.bindings.ObservableProperty
 import org.uqbar.arena.layout.ColumnLayout
@@ -14,13 +16,8 @@ import org.uqbar.arena.widgets.Label
 import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.widgets.Selector
 import org.uqbar.arena.windows.WindowOwner
-import org.uqbar.commons.applicationContext.ApplicationContext
 
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
-import ar.edu.unq.domino.Pizzas.Plato
-import ar.edu.unq.domino.Pizzas.Pedido
-import ar.edu.unq.domino.repo.RepoTamanios
-import ar.edu.unq.domino.repo.RepoDistribuciones
 
 class EditarPlatoWindow extends TransactionalDialog<PlatoAppModel> {
 
@@ -87,14 +84,14 @@ class EditarPlatoWindow extends TransactionalDialog<PlatoAppModel> {
 		]
 		
 		val formIng = new Panel(panel).layout = new ColumnLayout(3)
-		var ingredientes = Menu.instance.ingredientes
+		var ingredientes = {}
 
 		for (ingrediente : ingredientes) {
 			new CheckBox(formIng) => [
 				
 			]
 			new Label(formIng) => [
-				text = ingrediente.getNombre()
+//				text = ingrediente.getNombre()
 			]
 			new Selector<DistribucionPizza>(formIng) => [
 				allowNull(false)

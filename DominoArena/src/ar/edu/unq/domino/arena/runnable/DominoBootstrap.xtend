@@ -82,6 +82,7 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 			create("Jamón y morron", 150, ingredientesJamonYMorron )
 			create("Napolitana", 145, ingredientesNapolitana)
 			create("Huevo", 120, ingredientesHuevo)
+			create("Armá tu pizza, con los ingredientes que mas te gusten", 70, ingredientesExtra)
 		]
 
 		plato1 = new Plato("Napolitana", repoPromociones.search("Napolitana").get(0), tamanio, ingredientesExtra)

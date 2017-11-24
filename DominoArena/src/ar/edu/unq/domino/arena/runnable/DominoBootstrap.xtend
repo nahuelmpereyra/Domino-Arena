@@ -3,6 +3,7 @@ package ar.edu.unq.domino.arena.runnable
 import ar.edu.unq.domino.EstadosDePedido.EstadoDePedido
 import ar.edu.unq.domino.Mailing.GMailSender
 import ar.edu.unq.domino.Pizzas.Ingrediente
+import ar.edu.unq.domino.Pizzas.IngredienteConDistribucion
 import ar.edu.unq.domino.Pizzas.IngredientesExtras
 import ar.edu.unq.domino.Pizzas.Pedido
 import ar.edu.unq.domino.Pizzas.Plato
@@ -21,6 +22,7 @@ import ar.edu.unq.domino.repo.RepoPedidos
 import ar.edu.unq.domino.repo.RepoPromociones
 import ar.edu.unq.domino.repo.RepoTamanios
 import ar.edu.unq.domino.sistema.Cliente
+import java.util.ArrayList
 import org.uqbar.arena.bootstrap.CollectionBasedBootstrap
 import org.uqbar.commons.applicationContext.ApplicationContext
 
@@ -53,15 +55,17 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 		val retiroDelivery = new Delivery("Calle falsa 123")
 		val tamanio = new Grande
 		val ingredientesExtra = new IngredientesExtras
-		val ingredientesJamonYMorron = new IngredientesExtras
-		val ingredientesNapolitana = new IngredientesExtras
-		val ingredientesHuevo = new IngredientesExtras
 		val repoEstados = ApplicationContext.instance.getSingleton(typeof(EstadoDePedido)) as RepoEstados
 		val repoTamanios = ApplicationContext.instance.getSingleton(typeof(TamanioPromo)) as RepoTamanios
 		val repoDistribuciones = ApplicationContext.instance.getSingleton(typeof(DistribucionPizza)) as RepoDistribuciones
 
 		GMailSender.config(new GMailSender("pruebasfacultadtpi@gmail.com", "unqui2017"))
 		
+		repoDistribuciones => [
+			createToda
+			createMitadIzquierda
+			createMitadDerecha
+		]
 		
 		repoIngredientes => [
 			create("Jamón", 15)
@@ -71,18 +75,26 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 			create("Queso", 20)
 			create("Huevo", 20)
 		]
+		val ingredientesJamon = new IngredienteConDistribucion(repoIngredientes.searchByName("Jamón"), repoDistribuciones.searchById(1))
+		val ingredientesMorron = new IngredienteConDistribucion(repoIngredientes.searchByName("Morrones"), repoDistribuciones.searchById(1))
+		val ingredientesNapolitana = new IngredienteConDistribucion(repoIngredientes.searchByName("Tomate"), repoDistribuciones.searchById(1))
+		val ingredientesHuevo = new IngredienteConDistribucion(repoIngredientes.searchByName("Huevo"), repoDistribuciones.searchById(1))
 		
-		ingredientesJamonYMorron.agregarIngrediente(repoIngredientes.searchByName("Jamón"), new Toda())
-		ingredientesJamonYMorron.agregarIngrediente(repoIngredientes.searchByName("Morrones"), new Toda())
-		ingredientesNapolitana.agregarIngrediente(repoIngredientes.searchByName("Tomate"), new Toda())
-		ingredientesHuevo.agregarIngrediente(repoIngredientes.searchByName("Huevo"), new Toda())
+		val ingJamMorr = new ArrayList
+		val ingNapo = new ArrayList
+		val ingHuevo = new ArrayList
+		val promoVacia= new ArrayList
 		
+		ingJamMorr.add(ingredientesJamon)
+		ingJamMorr.add(ingredientesMorron)
+		ingNapo.add(ingredientesNapolitana)
+		promoVacia.add(ingredientesHuevo)
 		
 		repoPromociones => [
-			create("Jamón y morron", 150, ingredientesJamonYMorron )
-			create("Napolitana", 145, ingredientesNapolitana)
-			create("Huevo", 120, ingredientesHuevo)
-			create("Armá tu pizza, con los ingredientes que mas te gusten", 70, ingredientesExtra)
+			create("Jamón y morron", 150, ingJamMorr )
+			create("Napolitana", 145, ingNapo)
+			create("Huevo", 120, ingHuevo)
+			create("Armá tu pizza, con los ingredientes que mas te gusten", 70, promoVacia)
 		]
 
 		plato1 = new Plato("Napolitana", repoPromociones.search("Napolitana").get(0), tamanio, ingredientesExtra)
@@ -119,12 +131,6 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 			createPorcion
 		]
 
-		repoDistribuciones => [
-			createToda
-			createMitadIzquierda
-			createMitadDerecha
-		]
-		repoPromociones.allInstances.get(0).ingredientesBase.agregarIngrediente(repoIngredientes.search("Jamón").get(0), repoDistribuciones.allInstances.get(0)) 
 
 	}
 

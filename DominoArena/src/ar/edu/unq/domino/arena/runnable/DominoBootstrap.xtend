@@ -112,7 +112,7 @@ class DominoBootstrap extends CollectionBasedBootstrap {
 			create2((repoClientes.search("Nahuel").get(0)), retiroLocal, "")
 			buscarPedidosAbiertos.get(0).agregarPlato(plato1)
 			buscarPedidosAbiertos.get(0).agregarPlato(plato2)
-			buscarPedidosAbiertos.get(1).agregarPlato(plato1)
+			buscarPedidosAbiertos.get(1).agregarPlato(plato2)
 		]
 
 		// 1 Pedido  -->   1 o varios Platos  -->  1 Promo
